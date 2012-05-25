@@ -107,7 +107,7 @@ void BaseRoot::initResourceManager()
 void BaseRoot::initFrameListener()
 {
     logger->logMessage( "initiating framelistener..." );
-    frameListener = new FrameListener();
+    frameListener = new FrameListener( window );
     root->addFrameListener( frameListener );
 }
 
