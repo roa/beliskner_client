@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 
     BaseRoot *base = BaseRoot::getSingletonPtr();
 
-    base->run();
+    base->runTest();
 
     return 0;
 }

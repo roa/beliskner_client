@@ -20,6 +20,8 @@ private:
     Ogre::Viewport      *viewport;
     FrameListener       *frameListener;
 
+    bool keepRunning;
+
     void initLogManager();
     void initOgre();
     void initRoot();
@@ -30,11 +32,14 @@ private:
     void initResourceManager();
     void initFrameListener();
 
+    void renderOneFrame();
+    bool running();
+
 public:
     BaseRoot();
     ~BaseRoot();
 
-    void run();
+    void runTest();
 };
 
 }

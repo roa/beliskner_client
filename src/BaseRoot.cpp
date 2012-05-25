@@ -14,6 +14,7 @@ BaseRoot::BaseRoot()
     camera          = NULL;
     viewport        = NULL;
     frameListener   = NULL;
+    keepRunning     = true;
     initLogManager();
     initOgre();
 }
@@ -111,11 +112,25 @@ void BaseRoot::initFrameListener()
     root->addFrameListener( frameListener );
 }
 
-void BaseRoot::run()
+void BaseRoot::renderOneFrame()
+{
+    Ogre::WindowEventUtilities::messagePump();
+    keepRunning = root->renderOneFrame();
+}
+
+bool BaseRoot::running()
+{
+    return keepRunning;
+}
+
+void BaseRoot::runTest()
 {
     Ogre::Entity *ent = sceneManager->createEntity( "Sinbad.mesh" );
     sceneManager->getRootSceneNode()->attachObject( ent );
-    root->startRendering();
+    while( running() )
+    {
+        renderOneFrame();
+    }
 }
 
 }
