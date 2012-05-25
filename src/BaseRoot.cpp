@@ -7,11 +7,13 @@ template<> BaseRoot* Ogre::Singleton<BaseRoot>::msSingleton = 0;
 
 BaseRoot::BaseRoot()
 {
+    logger          = NULL;
     root            = NULL;
     window          = NULL;
     sceneManager    = NULL;
     camera          = NULL;
     viewport        = NULL;
+    initLogManager();
     initOgre();
 }
 
@@ -84,6 +86,13 @@ void BaseRoot::initResourceManager()
         }
     }
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+}
+
+void BaseRoot::initLogManager()
+{
+    Ogre::LogManager *logMgr = new Ogre::LogManager();
+    logger = logMgr->getSingleton().createLog( "log/Beliskner.log", true, true, false );
+    logger->setDebugOutputEnabled( true );
 }
 
 void BaseRoot::run()

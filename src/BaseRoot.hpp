@@ -10,12 +10,14 @@ class BaseRoot : public Ogre::Singleton<BaseRoot>
 {
 
 private:
+    Ogre::Log           *logger;
     Ogre::Root          *root;
     Ogre::RenderWindow  *window;
     Ogre::SceneManager  *sceneManager;
     Ogre::Camera        *camera;
     Ogre::Viewport      *viewport;
 
+    void initLogManager();
     void initOgre();
     void initRoot();
     void initWindow();
