@@ -16,12 +16,18 @@ private:
     Ogre::Camera        *camera;
     Ogre::Viewport      *viewport;
 
+    void initOgre();
+    void initRoot();
+    void initWindow();
+    void initSceneManager();
+    void initCamera();
+    void initViewport();
+    void initResourceManager();
 
 public:
     BaseRoot();
     ~BaseRoot();
 
-    bool initOgre();
     void run();
 };
 
