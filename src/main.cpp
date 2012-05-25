@@ -1,15 +1,16 @@
 #include <iostream>
 
+#include "BaseRoot.hpp"
+
+using namespace Beliskner;
+
 int main(int argc, char **argv)
 {
-    try
-    {
-        //app creation
-    }
-    catch( ... )
-    {
-        std::cerr << "An exception has occured " << std::endl;
-    }
+    new BaseRoot();
+
+    BaseRoot *base = BaseRoot::getSingletonPtr();
+    base->initOgre();
+    base->run();
 
     return 0;
 }
