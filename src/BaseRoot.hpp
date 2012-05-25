@@ -3,6 +3,8 @@
 
 #include "OGRE/Ogre.h"
 
+#include "FrameListener.hpp"
+
 namespace Beliskner
 {
 
@@ -16,6 +18,7 @@ private:
     Ogre::SceneManager  *sceneManager;
     Ogre::Camera        *camera;
     Ogre::Viewport      *viewport;
+    FrameListener       *frameListener;
 
     void initLogManager();
     void initOgre();
@@ -25,6 +28,7 @@ private:
     void initCamera();
     void initViewport();
     void initResourceManager();
+    void initFrameListener();
 
 public:
     BaseRoot();

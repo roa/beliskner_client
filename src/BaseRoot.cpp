@@ -13,13 +13,22 @@ BaseRoot::BaseRoot()
     sceneManager    = NULL;
     camera          = NULL;
     viewport        = NULL;
+    frameListener   = NULL;
     initLogManager();
     initOgre();
 }
 
 BaseRoot::~BaseRoot()
 {
+    delete root;
+}
 
+void BaseRoot::initLogManager()
+{
+    Ogre::LogManager *logMgr = new Ogre::LogManager();
+    logger = logMgr->getSingleton().createLog( "log/Beliskner.log", true, true, false );
+    logger->setDebugOutputEnabled( true );
+    logger->logMessage( "initiated logmanager..." );
 }
 
 void BaseRoot::initOgre()
@@ -30,10 +39,12 @@ void BaseRoot::initOgre()
     initCamera();
     initViewport();
     initResourceManager();
+    initFrameListener();
 }
 
 void BaseRoot::initRoot()
 {
+    logger->logMessage( "initiating root..." );
     root = new Ogre::Root( "config/plugins.cfg", "config/Ogre.cfg" );
 
     if( !root->showConfigDialog() )
@@ -44,16 +55,19 @@ void BaseRoot::initRoot()
 
 void BaseRoot::initWindow()
 {
+    logger->logMessage( "initiating window..." );
     window = root->initialise( true, "Beliskner" );
 }
 
 void BaseRoot::initSceneManager()
 {
+    logger->logMessage( "initiating scenemanager..." );
     sceneManager = root->createSceneManager( Ogre::ST_GENERIC );
 }
 
 void BaseRoot::initCamera()
 {
+    logger->logMessage( "initiating camera..." );
     camera = sceneManager->createCamera( "Camera" );
     camera->setPosition( Ogre::Vector3( 0, 0, 50 ) );
     camera->lookAt( Ogre::Vector3( 0, 0, 0 ) );
@@ -62,6 +76,7 @@ void BaseRoot::initCamera()
 
 void BaseRoot::initViewport()
 {
+    logger->logMessage( "initiating viewport" );
     viewport = window->addViewport( camera );
     viewport->setBackgroundColour( Ogre::ColourValue( 0.5, 0.5, 0.5 ) );
     camera->setAspectRatio( Ogre::Real( viewport->getActualWidth() ) / Ogre::Real( viewport->getActualHeight() ) );
@@ -69,6 +84,7 @@ void BaseRoot::initViewport()
 
 void BaseRoot::initResourceManager()
 {
+    logger->logMessage( "initiating resourcemanager...");
     Ogre::ConfigFile configFile;
     configFile.load( "config/resources.cfg" );
     Ogre::ConfigFile::SectionIterator sectioniter = configFile.getSectionIterator();
@@ -88,11 +104,11 @@ void BaseRoot::initResourceManager()
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
-void BaseRoot::initLogManager()
+void BaseRoot::initFrameListener()
 {
-    Ogre::LogManager *logMgr = new Ogre::LogManager();
-    logger = logMgr->getSingleton().createLog( "log/Beliskner.log", true, true, false );
-    logger->setDebugOutputEnabled( true );
+    logger->logMessage( "initiating framelistener..." );
+    frameListener = new FrameListener();
+    root->addFrameListener( frameListener );
 }
 
 void BaseRoot::run()
