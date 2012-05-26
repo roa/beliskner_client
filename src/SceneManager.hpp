@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "BaseRoot.hpp"
-#include "DemoScene.hpp"
+#include "BaseScene.hpp"
 
 namespace Beliskner
 {
@@ -14,11 +14,12 @@ namespace Beliskner
 class SceneManager
 {
 private:
-    std::vector<DemoScene*>* sceneManagerState;
+    std::vector<BaseScene*>* sceneManagerState;
     BaseRoot *base;
 
     void initSceneManager();
     void createMainScene();
+    void createNextScene();
 
 public:
     SceneManager();

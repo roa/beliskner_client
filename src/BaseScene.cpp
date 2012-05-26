@@ -1,47 +1,46 @@
-#include "DemoScene.hpp"
+#include "BaseScene.hpp"
 
 namespace Beliskner
 {
 
-DemoScene::DemoScene()
+BaseScene::BaseScene()
 {
     base         = NULL;
     sceneManager = NULL;
     camera       = NULL;
-    initScene();
-}
-
-DemoScene::~DemoScene()
-{
-
-}
-
-void DemoScene::initScene()
-{
     initBaseRoot();
+}
+
+BaseScene::~BaseScene()
+{
+
+}
+
+void BaseScene::enterScene()
+{
     initSceneManager();
     initCamera();
     initViewport();
 }
 
-void DemoScene::createScene()
+void BaseScene::createScene()
 {
     Ogre::Entity *ent = sceneManager->createEntity( "Sinbad.mesh" );
     sceneManager->getRootSceneNode()->attachObject( ent );
 }
 
-void DemoScene::initBaseRoot()
+void BaseScene::initBaseRoot()
 {
     base = BaseRoot::getSingletonPtr();
 }
 
-void DemoScene::initSceneManager()
+void BaseScene::initSceneManager()
 {
-    base->logger->logMessage( "initiating scenemanager in demoscene..." );
+    base->logger->logMessage( "initiating scenemanager in BaseScene..." );
     sceneManager = base->root->createSceneManager( Ogre::ST_GENERIC );
 }
 
-void DemoScene::initCamera()
+void BaseScene::initCamera()
 {
     base->logger->logMessage( "initiating camera..." );
     camera = sceneManager->createCamera( "Camera" );
@@ -50,7 +49,7 @@ void DemoScene::initCamera()
     camera->setNearClipDistance( 5 );
 }
 
-void DemoScene::initViewport()
+void BaseScene::initViewport()
 {
     base->logger->logMessage( "initiating viewport" );
     viewport = base->window->addViewport( camera );

@@ -17,20 +17,28 @@ SceneManager::~SceneManager()
 
 void SceneManager::initSceneManager()
 {
-    sceneManagerState = new std::vector<DemoScene*>;
+    new BaseRoot();
+    base = BaseRoot::getSingletonPtr();
+    sceneManagerState = new std::vector<BaseScene*>;
     createMainScene();
+    createNextScene();
 }
 
 void SceneManager::createMainScene()
 {
-    new BaseRoot();
-    base = BaseRoot::getSingletonPtr();
-    DemoScene *mainScene = new DemoScene();
+    BaseScene *mainScene = new BaseScene();
     sceneManagerState->push_back( mainScene );
+}
+
+void SceneManager::createNextScene()
+{
+    BaseScene *nextScene = new BaseScene();
+    sceneManagerState->push_back( nextScene );
 }
 
 void SceneManager::startMainScene()
 {
+    sceneManagerState->front()->enterScene();
     sceneManagerState->front()->createScene();
 }
 

@@ -1,5 +1,5 @@
-#ifndef BELISKNER_DEMOSCENE_HPP
-#define BELISKNER_DEMOSCENE_HPP
+#ifndef BELISKNER_BaseScene_HPP
+#define BELISKNER_BaseScene_HPP
 
 #include "OGRE/Ogre.h"
 #include "OIS/OIS.h"
@@ -9,7 +9,7 @@
 namespace Beliskner
 {
 
-class DemoScene
+class BaseScene
 {
 private:
     BaseRoot* base;
@@ -17,17 +17,15 @@ private:
     Ogre::Camera        *camera;
     Ogre::Viewport      *viewport;
 
-    void initScene();
-
     void initBaseRoot();
     void initSceneManager();
     void initCamera();
     void initViewport();
 
 public:
-    DemoScene();
-    ~DemoScene();
-
+    BaseScene();
+    ~BaseScene();
+    void enterScene();
     void createScene();
 };
 
