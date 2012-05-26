@@ -35,9 +35,9 @@ OBJDIR_RELEASE = obj/Release
 DEP_RELEASE = 
 OUT_RELEASE = ./bin/Release/beliskner_client
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/src/BaseRoot.o $(OBJDIR_DEBUG)/src/DemoApp.o $(OBJDIR_DEBUG)/src/DemoScene.o $(OBJDIR_DEBUG)/src/DemoScene2.o $(OBJDIR_DEBUG)/src/FrameListener.o $(OBJDIR_DEBUG)/src/InputHandler.o $(OBJDIR_DEBUG)/src/SceneManager.o $(OBJDIR_DEBUG)/src/main.o
+OBJ_DEBUG = $(OBJDIR_DEBUG)/src/BaseRoot.o $(OBJDIR_DEBUG)/src/DemoApp.o $(OBJDIR_DEBUG)/src/DemoScene.o $(OBJDIR_DEBUG)/src/DemoScene2.o $(OBJDIR_DEBUG)/src/FrameListener.o $(OBJDIR_DEBUG)/src/SceneManager.o $(OBJDIR_DEBUG)/src/main.o
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/src/BaseRoot.o $(OBJDIR_RELEASE)/src/DemoApp.o $(OBJDIR_RELEASE)/src/DemoScene.o $(OBJDIR_RELEASE)/src/DemoScene2.o $(OBJDIR_RELEASE)/src/FrameListener.o $(OBJDIR_RELEASE)/src/InputHandler.o $(OBJDIR_RELEASE)/src/SceneManager.o $(OBJDIR_RELEASE)/src/main.o
+OBJ_RELEASE = $(OBJDIR_RELEASE)/src/BaseRoot.o $(OBJDIR_RELEASE)/src/DemoApp.o $(OBJDIR_RELEASE)/src/DemoScene.o $(OBJDIR_RELEASE)/src/DemoScene2.o $(OBJDIR_RELEASE)/src/FrameListener.o $(OBJDIR_RELEASE)/src/SceneManager.o $(OBJDIR_RELEASE)/src/main.o
 
 all: debug release
 
@@ -68,9 +68,6 @@ $(OBJDIR_DEBUG)/src/DemoScene2.o: src/DemoScene2.cpp
 
 $(OBJDIR_DEBUG)/src/FrameListener.o: src/FrameListener.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/FrameListener.cpp -o $(OBJDIR_DEBUG)/src/FrameListener.o
-
-$(OBJDIR_DEBUG)/src/InputHandler.o: src/InputHandler.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/InputHandler.cpp -o $(OBJDIR_DEBUG)/src/InputHandler.o
 
 $(OBJDIR_DEBUG)/src/SceneManager.o: src/SceneManager.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/SceneManager.cpp -o $(OBJDIR_DEBUG)/src/SceneManager.o
@@ -108,9 +105,6 @@ $(OBJDIR_RELEASE)/src/DemoScene2.o: src/DemoScene2.cpp
 
 $(OBJDIR_RELEASE)/src/FrameListener.o: src/FrameListener.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/FrameListener.cpp -o $(OBJDIR_RELEASE)/src/FrameListener.o
-
-$(OBJDIR_RELEASE)/src/InputHandler.o: src/InputHandler.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/InputHandler.cpp -o $(OBJDIR_RELEASE)/src/InputHandler.o
 
 $(OBJDIR_RELEASE)/src/SceneManager.o: src/SceneManager.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/SceneManager.cpp -o $(OBJDIR_RELEASE)/src/SceneManager.o

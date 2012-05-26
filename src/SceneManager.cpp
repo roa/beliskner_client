@@ -12,7 +12,7 @@ SceneManager::SceneManager()
 
 SceneManager::~SceneManager()
 {
-
+    delete sceneManagerState;
 }
 
 void SceneManager::initSceneManager()
@@ -21,7 +21,7 @@ void SceneManager::initSceneManager()
     sceneManagerState = new std::vector<BaseScene*>;
 }
 
-void SceneManager::createNewScene( BaseScene* _newScene )
+void SceneManager::addNewScene( BaseScene* _newScene )
 {
     sceneManagerState->push_back( _newScene );
 }

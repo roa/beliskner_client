@@ -21,7 +21,7 @@ public:
     BaseScene* currentScene;
 
     void initSceneManager();
-    void createNewScene( BaseScene* _newScene );
+    void addNewScene( BaseScene* _newScene );
 
 public:
     SceneManager();

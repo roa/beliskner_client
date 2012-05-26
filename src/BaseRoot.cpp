@@ -20,6 +20,7 @@ BaseRoot::BaseRoot()
 
 BaseRoot::~BaseRoot()
 {
+    delete frameListener;
     delete root;
 }
 
@@ -98,9 +99,9 @@ void BaseRoot::initSceneManager()
 {
     sceneManager = new SceneManager();
     DemoScene *demoscene = new DemoScene( "mainScene" );
-    sceneManager->createNewScene( demoscene );
+    sceneManager->addNewScene( demoscene );
     DemoScene2 *demoscene2 = new DemoScene2( "nextScene" );
-    sceneManager->createNewScene( demoscene2 );
+    sceneManager->addNewScene( demoscene2 );
 }
 
 void BaseRoot::renderOneFrame()
