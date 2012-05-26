@@ -7,8 +7,6 @@
 namespace Beliskner
 {
 
-class SceneManager;
-
 class BaseScene
 {
 public:

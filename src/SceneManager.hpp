@@ -12,7 +12,6 @@ namespace Beliskner
 {
 
 class BaseRoot;
-class BaseScene;
 
 class SceneManager
 {
