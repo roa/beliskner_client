@@ -17,20 +17,21 @@ FrameListener::FrameListener( Ogre::RenderWindow *_window )
     inputManager = OIS::InputManager::createInputSystem( parameters );
     keyboard = static_cast<OIS::Keyboard*>( inputManager->createInputObject( OIS::OISKeyboard, false ) );
 
-    inputHandler = new InputHandler( keyboard );
+    base = BaseRoot::getSingletonPtr();
+
+    leaveApp = false;
 }
 
 FrameListener::~FrameListener()
 {
-    delete inputHandler;
     inputManager->destroyInputObject( keyboard );
     OIS::InputManager::destroyInputSystem( inputManager );
 }
 
 bool FrameListener::frameStarted( const Ogre::FrameEvent &evt )
 {
-    inputHandler->handleKeyboard();
-    return !inputHandler->getLeaveApp();
+    base->sceneManager->currentScene->handleInput();
+    return !leaveApp;
 }
 
 bool FrameListener::frameEnded( const Ogre::FrameEvent &evt )

@@ -67,5 +67,18 @@ void DemoScene::destroyCamera()
     sceneManager->destroyCamera( camera );
 }
 
+void DemoScene::handleInput()
+{
+    base->frameListener->keyboard->capture();
+    if( base->frameListener->keyboard->isKeyDown( OIS::KC_ESCAPE ) )
+    {
+        base->frameListener->leaveApp = true;
+    }
+    if( base->frameListener->keyboard->isKeyDown( OIS::KC_S) )
+    {
+        base->sceneManager->switchScene = true;
+        base->sceneManager->switchToScene( "nextScene" );
+    }
+}
 
 }

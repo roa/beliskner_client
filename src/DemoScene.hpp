@@ -15,8 +15,8 @@ public:
     ~DemoScene();
 
     BaseRoot* base;
-    void createScene();
 
+    void createScene();
     void initSceneManager();
     void initCamera();
     void destroySceneManager();
@@ -24,6 +24,7 @@ public:
     void exitScene();
     void enterScene();
     void initBaseRoot();
+    void handleInput();
 };
 
 }

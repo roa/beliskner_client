@@ -45,8 +45,8 @@ void SceneManager::switchToScene( std::string _sceneName )
             {
                 currentScene->exitScene();
                 currentScene = baseScene;
-                baseScene->enterScene();
-                baseScene->createScene();
+                currentScene->enterScene();
+                currentScene->createScene();
             }
             else
             {

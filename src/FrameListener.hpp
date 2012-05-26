@@ -4,21 +4,24 @@
 #include "OGRE/Ogre.h"
 #include "OIS/OIS.h"
 
-#include "InputHandler.hpp"
+#include "BaseRoot.hpp"
 
 namespace Beliskner
 {
 
 class InputHandler;
+class BaseRoot;
 
 class FrameListener : public Ogre::FrameListener
 {
 
-private:
+public:
     OIS::InputManager*  inputManager;
     OIS::Keyboard*      keyboard;
+    BaseRoot* base;
 
-public:
+    bool leaveApp;
+
     FrameListener( Ogre::RenderWindow *_window );
     ~FrameListener();
 
@@ -26,7 +29,6 @@ public:
     bool frameEnded( const Ogre::FrameEvent &evt );
     bool frameRenderingQueued( const Ogre::FrameEvent &evt );
 
-    InputHandler*       inputHandler;
 };
 
 }
