@@ -5,7 +5,7 @@
 #include "OIS/OIS.h"
 
 #include "BaseRoot.hpp"
-#include "DemoScene.hpp"
+#include "SceneManager.hpp"
 
 namespace Beliskner
 {
@@ -13,8 +13,8 @@ namespace Beliskner
 class DemoApp
 {
 private:
-    BaseRoot*   base;
-    DemoScene*  scene;
+    BaseRoot*       base;
+    SceneManager*   sceneManager;
 
     void initDemoApp();
 

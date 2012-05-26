@@ -5,8 +5,8 @@ namespace Beliskner
 
 DemoApp::DemoApp()
 {
-    base    = NULL;
-    scene   = NULL;
+    base            = NULL;
+    sceneManager    = NULL;
     initDemoApp();
 }
 
@@ -17,14 +17,13 @@ DemoApp::~DemoApp()
 
 void DemoApp::initDemoApp()
 {
-    new BaseRoot();
+    sceneManager = new SceneManager();
     base = BaseRoot::getSingletonPtr();
-    scene = new DemoScene();
-    scene->createScene();
 }
 
 void DemoApp::run()
 {
+    sceneManager->startMainScene();
     while( base->running() )
     {
         base->renderOneFrame();
