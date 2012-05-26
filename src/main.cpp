@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "BaseRoot.hpp"
+#include "DemoScene.hpp"
 
 using namespace Beliskner;
 
@@ -8,9 +9,9 @@ int main(int argc, char **argv)
 {
     new BaseRoot();
 
-    BaseRoot *base = BaseRoot::getSingletonPtr();
+    DemoScene app;
 
-    base->runTest();
+    app.run();
 
     return 0;
 }

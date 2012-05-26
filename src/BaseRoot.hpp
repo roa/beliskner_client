@@ -11,13 +11,10 @@ namespace Beliskner
 class BaseRoot : public Ogre::Singleton<BaseRoot>
 {
 
-private:
+public:
     Ogre::Log           *logger;
     Ogre::Root          *root;
     Ogre::RenderWindow  *window;
-    Ogre::SceneManager  *sceneManager;
-    Ogre::Camera        *camera;
-    Ogre::Viewport      *viewport;
     FrameListener       *frameListener;
 
     bool keepRunning;
@@ -26,20 +23,18 @@ private:
     void initOgre();
     void initRoot();
     void initWindow();
-    void initSceneManager();
-    void initCamera();
-    void initViewport();
+
     void initResourceManager();
     void initFrameListener();
 
     void renderOneFrame();
     bool running();
 
-public:
     BaseRoot();
     ~BaseRoot();
 
-    void runTest();
+private:
+
 };
 
 }
