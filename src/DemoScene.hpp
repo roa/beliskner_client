@@ -38,7 +38,7 @@ public:
     ~DemoScene();
 
     void createScene();
-    void enterScene();
+    void prepareScene();
     void exitScene();
     void switchScene();
 

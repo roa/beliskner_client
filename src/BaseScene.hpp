@@ -21,7 +21,7 @@ public:
     virtual void destroySceneManager()  = 0;
     virtual void destroyCamera()        = 0;
 
-    virtual void enterScene()           = 0;
+    virtual void prepareScene()           = 0;
     virtual void exitScene()            = 0;
     virtual void createScene()          = 0;
 

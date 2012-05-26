@@ -5,10 +5,11 @@ namespace Beliskner
 
 DemoScene2::DemoScene2( std::string _sceneName )
 {
+    base = BaseRoot::getSingletonPtr();
     sceneName = _sceneName;
     sceneManager = NULL;
     camera       = NULL;
-    initBaseRoot();
+    sceneSwitch  = false;
 }
 
 DemoScene2::~DemoScene2()
@@ -18,11 +19,12 @@ DemoScene2::~DemoScene2()
 
 void DemoScene2::createScene()
 {
+    sceneSwitch = false;
     Ogre::Entity *ent = sceneManager->createEntity( "ninja.mesh" );
     sceneManager->getRootSceneNode()->attachObject( ent );
 }
 
-void DemoScene2::enterScene()
+void DemoScene2::prepareScene()
 {
     initSceneManager();
     initCamera();
@@ -34,9 +36,10 @@ void DemoScene2::exitScene()
     destroySceneManager();
 }
 
-void DemoScene2::initBaseRoot()
+void DemoScene2::switchScene()
 {
-    base = BaseRoot::getSingletonPtr();
+    if( sceneSwitch )
+        base->sceneManager->switchToScene( "mainScene" );
 }
 
 void DemoScene2::initSceneManager()
@@ -68,6 +71,13 @@ void DemoScene2::destroyCamera()
 
 void DemoScene2::updateScene()
 {
+    updateKeyboard();
+    updateMouse();
+    switchScene();
+}
+
+void DemoScene2::updateKeyboard()
+{
     base->frameListener->keyboard->capture();
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_ESCAPE ) )
     {
@@ -75,8 +85,13 @@ void DemoScene2::updateScene()
     }
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_S) )
     {
-        base->sceneManager->switchToScene( "mainScene" );
+        sceneSwitch = true;
     }
+}
+
+void DemoScene2::updateMouse()
+{
+
 }
 
 }

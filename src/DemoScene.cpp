@@ -54,7 +54,7 @@ void DemoScene::createScene()
     sceneManager->setShadowTechnique( Ogre::SHADOWTYPE_STENCIL_ADDITIVE );
 }
 
-void DemoScene::enterScene()
+void DemoScene::prepareScene()
 {
     initSceneManager();
     initCamera();

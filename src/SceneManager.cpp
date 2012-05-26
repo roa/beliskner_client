@@ -28,7 +28,7 @@ void SceneManager::addNewScene( BaseScene* _newScene )
 
 void SceneManager::startMainScene()
 {
-    sceneManagerState->front()->enterScene();
+    sceneManagerState->front()->prepareScene();
     sceneManagerState->front()->createScene();
     currentScene = sceneManagerState->front();
 }
@@ -44,7 +44,7 @@ void SceneManager::switchToScene( std::string _sceneName )
             {
                 currentScene->exitScene();
                 currentScene = baseScene;
-                currentScene->enterScene();
+                currentScene->prepareScene();
                 currentScene->createScene();
                 break;
             }
