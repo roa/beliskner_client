@@ -11,6 +11,7 @@ BaseRoot::BaseRoot()
     root            = NULL;
     window          = NULL;
     frameListener   = NULL;
+    viewport        = NULL;
     keepRunning     = true;
     initLogManager();
     initOgre();
@@ -34,6 +35,7 @@ void BaseRoot::initOgre()
 {
     initRoot();
     initWindow();
+    initViewport();
     initResourceManager();
     initFrameListener();
 }
@@ -53,6 +55,14 @@ void BaseRoot::initWindow()
 {
     logger->logMessage( "initiating window..." );
     window = root->initialise( true, "Beliskner" );
+}
+
+void BaseRoot::initViewport()
+{
+    logger->logMessage( "initiating viewport" );
+    viewport = window->addViewport( 0 );
+    viewport->setBackgroundColour( Ogre::ColourValue( 0.5, 0.5, 0.5 ) );
+    viewport->setCamera( 0 );
 }
 
 void BaseRoot::initResourceManager()
@@ -87,6 +97,10 @@ void BaseRoot::initFrameListener()
 void BaseRoot::initSceneManager()
 {
     sceneManager = new SceneManager();
+    DemoScene *demoscene = new DemoScene( "mainScene" );
+    sceneManager->createNewScene( demoscene );
+    DemoScene2 *demoscene2 = new DemoScene2( "nextScene" );
+    sceneManager->createNewScene( demoscene2 );
 }
 
 void BaseRoot::renderOneFrame()

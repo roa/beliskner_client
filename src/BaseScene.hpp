@@ -4,41 +4,29 @@
 #include "OGRE/Ogre.h"
 #include "OIS/OIS.h"
 
-#include "BaseRoot.hpp"
-
 namespace Beliskner
 {
 
-class BaseRoot;
 class SceneManager;
 
 class BaseScene
 {
 public:
-    BaseRoot* base;
     Ogre::SceneManager  *sceneManager;
     Ogre::Camera        *camera;
-    Ogre::Viewport      *viewport;
 
     std::string sceneName;
 
-    void initBaseRoot();
+    virtual void initSceneManager()     = 0;
+    virtual void initCamera()           = 0;
 
-    void initSceneManager();
-    void initCamera();
-    void initViewport();
+    virtual void destroySceneManager()  = 0;
+    virtual void destroyCamera()        = 0;
 
-    void destroySceneManager();
-    void destroyCamera();
+    virtual void enterScene()           = 0;
+    virtual void exitScene()            = 0;
 
-    BaseScene();
-    ~BaseScene();
-
-    void enterScene();
-    void exitScene();
-
-    virtual void createScene() = 0;
-    virtual void createScene2() = 0;
+    virtual void createScene()          = 0;
 };
 
 }

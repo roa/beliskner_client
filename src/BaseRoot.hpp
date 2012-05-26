@@ -6,11 +6,14 @@
 #include "FrameListener.hpp"
 #include "SceneManager.hpp"
 #include "BaseScene.hpp"
+#include "DemoScene.hpp"
+#include "DemoScene2.hpp"
 
 namespace Beliskner
 {
 
 class FrameListener;
+class SceneManager;
 
 class BaseRoot : public Ogre::Singleton<BaseRoot>
 {
@@ -19,6 +22,7 @@ public:
     Ogre::Log           *logger;
     Ogre::Root          *root;
     Ogre::RenderWindow  *window;
+    Ogre::Viewport      *viewport;
     FrameListener       *frameListener;
     SceneManager        *sceneManager;
 
@@ -28,6 +32,7 @@ public:
     void initOgre();
     void initRoot();
     void initWindow();
+    void initViewport();
 
     void initResourceManager();
     void initFrameListener();

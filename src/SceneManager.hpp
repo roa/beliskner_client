@@ -5,6 +5,9 @@
 #include "OIS/OIS.h"
 #include <vector>
 
+#include "BaseScene.hpp"
+#include "BaseRoot.hpp"
+
 namespace Beliskner
 {
 
@@ -13,17 +16,19 @@ class BaseScene;
 
 class SceneManager
 {
-private:
+public:
     std::vector<BaseScene*>* sceneManagerState;
     BaseRoot *base;
+    BaseScene* currentScene;
 
     void initSceneManager();
-    void createMainScene();
-    void createNextScene();
+    void createNewScene( BaseScene* _newScene );
 
 public:
     SceneManager();
     ~SceneManager();
+
+    bool switchScene;
 
     void startMainScene();
     void switchToScene( std::string _sceneName );

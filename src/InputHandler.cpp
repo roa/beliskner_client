@@ -21,9 +21,15 @@ void InputHandler::whichKeyDown()
     {
         setLeaveApp();
     }
-    if( keyboard->isKeyDown( OIS::KC_S ) )
+    if( keyboard->isKeyDown( OIS::KC_S) )
     {
+        base->sceneManager->switchScene = true;
         base->sceneManager->switchToScene( "nextScene" );
+    }
+    if( keyboard->isKeyDown( OIS::KC_A) )
+    {
+        base->sceneManager->switchScene = true;
+        base->sceneManager->switchToScene( "mainScene" );
     }
 }
 

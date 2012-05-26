@@ -1,52 +1,51 @@
-#include "DemoScene.hpp"
+#include "DemoScene2.hpp"
 
 namespace Beliskner
 {
 
-DemoScene::DemoScene( std::string _sceneName )
+DemoScene2::DemoScene2( std::string _sceneName )
 {
     sceneName = _sceneName;
     sceneManager = NULL;
     camera       = NULL;
     initBaseRoot();
-
 }
 
-DemoScene::~DemoScene()
+DemoScene2::~DemoScene2()
 {
 
 }
 
-void DemoScene::createScene()
+void DemoScene2::createScene()
 {
-    Ogre::Entity *ent = sceneManager->createEntity( "Sinbad.mesh" );
+    Ogre::Entity *ent = sceneManager->createEntity( "ninja.mesh" );
     sceneManager->getRootSceneNode()->attachObject( ent );
 }
 
-void DemoScene::enterScene()
+void DemoScene2::enterScene()
 {
     initSceneManager();
     initCamera();
 }
 
-void DemoScene::exitScene()
+void DemoScene2::exitScene()
 {
     destroyCamera();
     destroySceneManager();
 }
 
-void DemoScene::initBaseRoot()
+void DemoScene2::initBaseRoot()
 {
     base = BaseRoot::getSingletonPtr();
 }
 
-void DemoScene::initSceneManager()
+void DemoScene2::initSceneManager()
 {
-    base->logger->logMessage( "initiating scenemanager in DemoScene..." );
+    base->logger->logMessage( "initiating scenemanager in DemoScene2..." );
     sceneManager = base->root->createSceneManager( Ogre::ST_GENERIC );
 }
 
-void DemoScene::initCamera()
+void DemoScene2::initCamera()
 {
     base->logger->logMessage( "initiating camera..." );
     camera = sceneManager->createCamera( "Camera" );
@@ -57,12 +56,12 @@ void DemoScene::initCamera()
     base->viewport->setCamera( camera );
 }
 
-void DemoScene::destroySceneManager()
+void DemoScene2::destroySceneManager()
 {
     base->root->destroySceneManager( sceneManager );
 }
 
-void DemoScene::destroyCamera()
+void DemoScene2::destroyCamera()
 {
     sceneManager->destroyCamera( camera );
 }
