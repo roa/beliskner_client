@@ -5,11 +5,11 @@
 #include "OIS/OIS.h"
 #include <vector>
 
-#include "BaseRoot.hpp"
-#include "BaseScene.hpp"
-
 namespace Beliskner
 {
+
+class BaseRoot;
+class BaseScene;
 
 class SceneManager
 {
@@ -26,6 +26,7 @@ public:
     ~SceneManager();
 
     void startMainScene();
+    void switchToScene( std::string _sceneName );
 };
 
 }

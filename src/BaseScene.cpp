@@ -23,10 +23,10 @@ void BaseScene::enterScene()
     initViewport();
 }
 
-void BaseScene::createScene()
+void BaseScene::exitScene()
 {
-    Ogre::Entity *ent = sceneManager->createEntity( "Sinbad.mesh" );
-    sceneManager->getRootSceneNode()->attachObject( ent );
+    destroyCamera();
+    destroySceneManager();
 }
 
 void BaseScene::initBaseRoot()
@@ -56,4 +56,15 @@ void BaseScene::initViewport()
     viewport->setBackgroundColour( Ogre::ColourValue( 0.5, 0.5, 0.5 ) );
     camera->setAspectRatio( Ogre::Real( viewport->getActualWidth() ) / Ogre::Real( viewport->getActualHeight() ) );
 }
+
+void BaseScene::destroySceneManager()
+{
+    base->root->destroySceneManager( sceneManager );
+}
+
+void BaseScene::destroyCamera()
+{
+    sceneManager->destroyCamera( camera );
+}
+
 }

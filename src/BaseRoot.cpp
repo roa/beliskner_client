@@ -14,6 +14,7 @@ BaseRoot::BaseRoot()
     keepRunning     = true;
     initLogManager();
     initOgre();
+    initSceneManager();
 }
 
 BaseRoot::~BaseRoot()
@@ -81,6 +82,11 @@ void BaseRoot::initFrameListener()
     logger->logMessage( "initiating framelistener..." );
     frameListener = new FrameListener( window );
     root->addFrameListener( frameListener );
+}
+
+void BaseRoot::initSceneManager()
+{
+    sceneManager = new SceneManager();
 }
 
 void BaseRoot::renderOneFrame()

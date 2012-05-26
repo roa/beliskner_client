@@ -3,12 +3,18 @@
 
 #include "OIS/OIS.h"
 
+#include "BaseRoot.hpp"
+
 namespace Beliskner
 {
+
+class BaseRoot;
 
 class InputHandler
 {
 private:
+    BaseRoot *base;
+
     OIS::Keyboard *keyboard;
     bool leaveApp;
 

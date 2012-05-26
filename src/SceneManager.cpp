@@ -1,4 +1,5 @@
 #include "SceneManager.hpp"
+#include "DemoScene.hpp"
 
 namespace Beliskner
 {
@@ -17,7 +18,6 @@ SceneManager::~SceneManager()
 
 void SceneManager::initSceneManager()
 {
-    new BaseRoot();
     base = BaseRoot::getSingletonPtr();
     sceneManagerState = new std::vector<BaseScene*>;
     createMainScene();
@@ -26,20 +26,29 @@ void SceneManager::initSceneManager()
 
 void SceneManager::createMainScene()
 {
-    BaseScene *mainScene = new BaseScene();
+    DemoScene *mainScene = new DemoScene( "mainScene" );
     sceneManagerState->push_back( mainScene );
 }
 
 void SceneManager::createNextScene()
 {
-    BaseScene *nextScene = new BaseScene();
+    DemoScene *nextScene = new DemoScene( "nextScene" );
     sceneManagerState->push_back( nextScene );
 }
 
 void SceneManager::startMainScene()
 {
     sceneManagerState->front()->enterScene();
-    sceneManagerState->front()->createScene();
+    sceneManagerState->front()->createScene2();
+}
+
+void SceneManager::switchToScene( std::string _sceneName )
+{
+    for(std::vector<BaseScene*>::iterator it = sceneManagerState->begin(); it != sceneManagerState->end(); ++it)
+    {
+        BaseScene* baseScene = *it;
+        std::cout << baseScene->sceneName << std::endl;
+    }
 }
 
 }
