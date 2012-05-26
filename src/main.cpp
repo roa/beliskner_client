@@ -1,15 +1,14 @@
 #include <iostream>
 
 #include "BaseRoot.hpp"
-#include "DemoScene.hpp"
+#include "DemoApp.hpp"
 
 using namespace Beliskner;
 
 int main(int argc, char **argv)
 {
-    new BaseRoot();
 
-    DemoScene app;
+    DemoApp app;
 
     app.run();
 

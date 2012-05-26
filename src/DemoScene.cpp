@@ -8,11 +8,7 @@ DemoScene::DemoScene()
     base         = NULL;
     sceneManager = NULL;
     camera       = NULL;
-    initBaseRoot();
-    initSceneManager();
-    initCamera();
-    initViewport();
-
+    initScene();
 }
 
 DemoScene::~DemoScene()
@@ -20,14 +16,18 @@ DemoScene::~DemoScene()
 
 }
 
-void DemoScene::run()
+void DemoScene::initScene()
+{
+    initBaseRoot();
+    initSceneManager();
+    initCamera();
+    initViewport();
+}
+
+void DemoScene::createScene()
 {
     Ogre::Entity *ent = sceneManager->createEntity( "Sinbad.mesh" );
     sceneManager->getRootSceneNode()->attachObject( ent );
-    while( base->running() )
-    {
-        base->renderOneFrame();
-    }
 }
 
 void DemoScene::initBaseRoot()

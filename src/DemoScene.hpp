@@ -17,6 +17,8 @@ private:
     Ogre::Camera        *camera;
     Ogre::Viewport      *viewport;
 
+    void initScene();
+
     void initBaseRoot();
     void initSceneManager();
     void initCamera();
@@ -26,7 +28,7 @@ public:
     DemoScene();
     ~DemoScene();
 
-    void run();
+    void createScene();
 };
 
 }
