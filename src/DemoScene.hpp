@@ -17,9 +17,11 @@ private:
     Ogre::AnimationState    *aniState;
     Ogre::AnimationState    *aniStateTop;
 
-    bool playerWalked;
+    Ogre::Vector3           cameraPosition;
+    Ogre::Vector3           playerPosition;
 
-    void initBaseRoot();
+    bool playerWalked;
+    bool sceneSwitch;
 
     void initSceneManager();
     void initCamera();
@@ -38,6 +40,7 @@ public:
     void createScene();
     void enterScene();
     void exitScene();
+    void switchScene();
 
     void updateScene();
 };

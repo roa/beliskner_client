@@ -6,10 +6,14 @@ namespace Beliskner
 DemoScene::DemoScene( std::string _sceneName )
 {
     sceneName = _sceneName;
+    base = BaseRoot::getSingletonPtr();
     sceneManager = NULL;
     camera       = NULL;
+
+    cameraPosition = ( 0, 0, 50 );
+    playerPosition = ( 0, 0, 0 );
     playerWalked = false;
-    initBaseRoot();
+    sceneSwitch  = false;
     std::cout << "const" << std::endl;
 }
 
@@ -18,14 +22,9 @@ DemoScene::~DemoScene()
 
 }
 
-void DemoScene::initBaseRoot()
-{
-    base = BaseRoot::getSingletonPtr();
-}
-
 void DemoScene::createScene()
 {
-    std::cout << "create" << std::endl;
+    sceneSwitch = false;
 
     Ogre::Plane plane( Ogre::Vector3::UNIT_Y, -5 );
     Ogre::MeshManager::getSingleton().createPlane( "plane",
@@ -49,6 +48,7 @@ void DemoScene::createScene()
     aniStateTop->setLoop( false );
 
     playerNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+    playerNode->setPosition( playerPosition );
     playerNode->attachObject( playerEnt );
 
     sceneManager->setShadowTechnique( Ogre::SHADOWTYPE_STENCIL_ADDITIVE );
@@ -62,8 +62,16 @@ void DemoScene::enterScene()
 
 void DemoScene::exitScene()
 {
+    playerPosition = playerNode->getPosition();
+    cameraPosition = camera->getPosition();
     destroyCamera();
     destroySceneManager();
+}
+
+void DemoScene::switchScene()
+{
+    if( sceneSwitch )
+        base->sceneManager->switchToScene( "nextScene" );
 }
 
 void DemoScene::initSceneManager()
@@ -76,7 +84,7 @@ void DemoScene::initCamera()
 {
     base->logger->logMessage( "initiating camera..." );
     camera = sceneManager->createCamera( "Camera" );
-    camera->setPosition( Ogre::Vector3( 0, 0, 50 ) );
+    camera->setPosition( Ogre::Vector3( cameraPosition ) );
     camera->lookAt( Ogre::Vector3( 0, 0, 0 ) );
     camera->setNearClipDistance( 5 );
     camera->setAspectRatio( Ogre::Real( base->viewport->getActualWidth() ) / Ogre::Real( base->viewport->getActualHeight() ) );
@@ -98,6 +106,7 @@ void DemoScene::updateScene()
     updateMouse();
     updateKeyboard();
     updateAnimations();
+    switchScene();
 }
 
 void DemoScene::updateKeyboard()
@@ -111,7 +120,8 @@ void DemoScene::updateKeyboard()
 
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_X ) )
     {
-        base->sceneManager->switchToScene( "nextScene" );
+        sceneSwitch = true;
+
         return;
     }
 
@@ -135,34 +145,50 @@ void DemoScene::updateKeyboard()
     camera->moveRelative( camTranslate * base->timer->getMilliseconds() * 0.01f );
 
     Ogre::Vector3 playerTranslate( 0, 0, 0 );
-    float playerRotation = 0.0f;
+    float playerRotation = 0;
+    bool up    = false;
+    bool down  = false;
+    bool right = false;
+    bool left  = false;
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_UP ) )
     {
         playerTranslate += Ogre::Vector3( 0, 0, -1 );
-        playerRotation   = 3.14f;
+        playerRotation   = 180;
         playerWalked     = true;
+        up               = true;
     }
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_DOWN ) )
     {
         playerTranslate += Ogre::Vector3( 0, 0, 1);
-        playerRotation = 0.0f;
+        playerRotation   = 0;
         playerWalked     = true;
+        down             = true;
     }
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_LEFT ) )
     {
         playerTranslate += Ogre::Vector3( -1, 0, 0 );
-        playerRotation = -1.57f;
+        playerRotation   = 270;
         playerWalked     = true;
+        left             = true;
     }
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_RIGHT ) )
     {
         playerTranslate += Ogre::Vector3( 1, 0, 0 );
-        playerRotation = 1.57f;
+        playerRotation   = 90;
         playerWalked     = true;
+        right            = true;
     }
+    if( up && left )
+        playerRotation = 225;
+    if( up && right )
+        playerRotation = 135;
+    if( down && left )
+        playerRotation = 305;
+    if( down && right )
+        playerRotation = 45;
     playerNode->translate( playerTranslate * 0.5f );
     playerNode->resetOrientation();
-    playerNode->yaw( Ogre::Radian( playerRotation ) );
+    playerNode->yaw( Ogre::Degree( playerRotation ) );
 }
 
 void DemoScene::updateMouse()
