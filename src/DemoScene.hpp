@@ -9,22 +9,37 @@ namespace Beliskner
 
 class DemoScene : public BaseScene
 {
+private:
+    BaseRoot* base;
+    Ogre::SceneNode         *playerNode;
+
+    Ogre::Entity            *playerEnt;
+    Ogre::AnimationState    *aniState;
+    Ogre::AnimationState    *aniStateTop;
+
+    bool playerWalked;
+
+    void initBaseRoot();
+
+    void initSceneManager();
+    void initCamera();
+
+    void destroySceneManager();
+    void destroyCamera();
+
+    void updateKeyboard();
+    void updateMouse();
+    void updateAnimations();
 
 public:
     DemoScene( std::string _sceneName );
     ~DemoScene();
 
-    BaseRoot* base;
-
     void createScene();
-    void initSceneManager();
-    void initCamera();
-    void destroySceneManager();
-    void destroyCamera();
-    void exitScene();
     void enterScene();
-    void initBaseRoot();
-    void handleInput();
+    void exitScene();
+
+    void updateScene();
 };
 
 }

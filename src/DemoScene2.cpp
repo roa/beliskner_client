@@ -66,7 +66,7 @@ void DemoScene2::destroyCamera()
     sceneManager->destroyCamera( camera );
 }
 
-void DemoScene2::handleInput()
+void DemoScene2::updateScene()
 {
     base->frameListener->keyboard->capture();
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_ESCAPE ) )

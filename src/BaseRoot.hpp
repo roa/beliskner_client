@@ -23,6 +23,8 @@ public:
     Ogre::Root          *root;
     Ogre::RenderWindow  *window;
     Ogre::Viewport      *viewport;
+    Ogre::Timer         *timer;
+
     FrameListener       *frameListener;
     SceneManager        *sceneManager;
 
@@ -33,6 +35,7 @@ public:
     void initRoot();
     void initWindow();
     void initViewport();
+    void initTimer();
 
     void initResourceManager();
     void initFrameListener();

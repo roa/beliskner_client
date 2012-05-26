@@ -12,6 +12,8 @@ BaseRoot::BaseRoot()
     window          = NULL;
     frameListener   = NULL;
     viewport        = NULL;
+    timer           = NULL;
+
     keepRunning     = true;
     initLogManager();
     initOgre();
@@ -37,6 +39,7 @@ void BaseRoot::initOgre()
     initRoot();
     initWindow();
     initViewport();
+    initTimer();
     initResourceManager();
     initFrameListener();
 }
@@ -60,10 +63,17 @@ void BaseRoot::initWindow()
 
 void BaseRoot::initViewport()
 {
-    logger->logMessage( "initiating viewport" );
+    logger->logMessage( "initiating viewport..." );
     viewport = window->addViewport( 0 );
     viewport->setBackgroundColour( Ogre::ColourValue( 0.5, 0.5, 0.5 ) );
     viewport->setCamera( 0 );
+}
+
+void BaseRoot::initTimer()
+{
+    logger->logMessage( "initiating timer..." );
+    timer = new Ogre::Timer();
+    timer->reset();
 }
 
 void BaseRoot::initResourceManager()

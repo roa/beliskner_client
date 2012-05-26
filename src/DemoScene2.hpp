@@ -24,7 +24,7 @@ public:
     void enterScene();
     void exitScene();
     void initBaseRoot();
-    void handleInput();
+    void updateScene();
 };
 
 }

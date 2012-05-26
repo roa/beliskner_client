@@ -25,7 +25,7 @@ public:
     virtual void exitScene()            = 0;
     virtual void createScene()          = 0;
 
-    virtual void handleInput()          = 0;
+    virtual void updateScene()          = 0;
 };
 
 }

@@ -16,8 +16,9 @@ class FrameListener : public Ogre::FrameListener
 {
 
 public:
-    OIS::InputManager*  inputManager;
-    OIS::Keyboard*      keyboard;
+    OIS::InputManager   *inputManager;
+    OIS::Keyboard       *keyboard;
+    OIS::Mouse          *mouse;
     BaseRoot* base;
 
     bool leaveApp;

@@ -5,6 +5,8 @@ namespace Beliskner
 
 FrameListener::FrameListener( Ogre::RenderWindow *_window )
 {
+    base = BaseRoot::getSingletonPtr();
+
     OIS::ParamList parameters;
     size_t windowHandle = 0;
     std::ostringstream windowHandleString;
@@ -16,8 +18,7 @@ FrameListener::FrameListener( Ogre::RenderWindow *_window )
 
     inputManager = OIS::InputManager::createInputSystem( parameters );
     keyboard = static_cast<OIS::Keyboard*>( inputManager->createInputObject( OIS::OISKeyboard, false ) );
-
-    base = BaseRoot::getSingletonPtr();
+    mouse    = static_cast<OIS::Mouse*>( inputManager->createInputObject( OIS::OISMouse, false ) );
 
     leaveApp = false;
 }
@@ -25,12 +26,14 @@ FrameListener::FrameListener( Ogre::RenderWindow *_window )
 FrameListener::~FrameListener()
 {
     inputManager->destroyInputObject( keyboard );
+    inputManager->destroyInputObject( mouse );
     OIS::InputManager::destroyInputSystem( inputManager );
 }
 
 bool FrameListener::frameStarted( const Ogre::FrameEvent &evt )
 {
-    base->sceneManager->currentScene->handleInput();
+    base->sceneManager->currentScene->updateScene();
+    base->timer->reset();
     return !leaveApp;
 }
 
