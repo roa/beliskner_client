@@ -27,8 +27,6 @@ public:
     SceneManager();
     ~SceneManager();
 
-    bool switchScene;
-
     void startMainScene();
     void switchToScene( std::string _sceneName );
 };

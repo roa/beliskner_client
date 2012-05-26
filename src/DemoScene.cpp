@@ -76,7 +76,6 @@ void DemoScene::handleInput()
     }
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_S) )
     {
-        base->sceneManager->switchScene = true;
         base->sceneManager->switchToScene( "nextScene" );
     }
 }

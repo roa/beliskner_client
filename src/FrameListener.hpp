@@ -28,7 +28,6 @@ public:
     bool frameStarted( const Ogre::FrameEvent &evt );
     bool frameEnded( const Ogre::FrameEvent &evt );
     bool frameRenderingQueued( const Ogre::FrameEvent &evt );
-
 };
 
 }

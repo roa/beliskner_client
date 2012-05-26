@@ -8,7 +8,6 @@ SceneManager::SceneManager()
     sceneManagerState = NULL;
     base              = NULL;
     initSceneManager();
-    switchScene = false;
 }
 
 SceneManager::~SceneManager()
@@ -36,7 +35,7 @@ void SceneManager::startMainScene()
 
 void SceneManager::switchToScene( std::string _sceneName )
 {
-    if( switchScene )
+    if( currentScene->sceneName.compare( _sceneName ) != 0 )
     {
         for(std::vector<BaseScene*>::iterator it = sceneManagerState->begin(); it != sceneManagerState->end(); ++it)
         {
@@ -47,13 +46,9 @@ void SceneManager::switchToScene( std::string _sceneName )
                 currentScene = baseScene;
                 currentScene->enterScene();
                 currentScene->createScene();
-            }
-            else
-            {
-                std::cout << "no" << std::endl;
+                break;
             }
         }
-        switchScene = false;
     }
 }
 
