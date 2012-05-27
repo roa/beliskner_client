@@ -25,6 +25,7 @@ void DemoApp::run()
     base->sceneManager->startMainScene();
     while( base->running() )
     {
+        Ogre::WindowEventUtilities::messagePump();
         base->renderOneFrame();
     }
 }

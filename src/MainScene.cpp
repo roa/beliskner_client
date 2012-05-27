@@ -230,4 +230,29 @@ void MainScene::updateAnimations()
     playerWalked = false;
 }
 
+bool MainScene::keyPressed( const OIS::KeyEvent& evt )
+{
+    return true;
+}
+
+bool MainScene::keyReleased( const OIS::KeyEvent& evt )
+{
+    return true;
+}
+
+bool MainScene::mouseMoved( const OIS::MouseEvent& evt )
+{
+    return true;
+}
+
+bool MainScene::mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
+{
+    return true;
+}
+
+bool MainScene::mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
+{
+    return true;
+}
+
 }

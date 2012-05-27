@@ -9,6 +9,9 @@
 #include "MainScene.hpp"
 #include "NextScene.hpp"
 
+#include <CEGUI/CEGUI.h>
+#include <CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h>
+
 namespace Beliskner
 {
 
@@ -28,6 +31,8 @@ public:
     FrameListener       *frameListener;
     SceneManager        *sceneManager;
 
+    CEGUI::OgreRenderer *ceguiRenderer;
+
     bool keepRunning;
 
     void initLogManager();
@@ -36,6 +41,7 @@ public:
     void initWindow();
     void initViewport();
     void initTimer();
+    void initGui();
 
     void initResourceManager();
     void initFrameListener();

@@ -42,6 +42,7 @@ void BaseRoot::initOgre()
     initTimer();
     initResourceManager();
     initFrameListener();
+    //initGui();
 }
 
 void BaseRoot::initRoot()
@@ -74,6 +75,17 @@ void BaseRoot::initTimer()
     logger->logMessage( "initiating timer..." );
     timer = new Ogre::Timer();
     timer->reset();
+}
+
+void BaseRoot::initGui()
+{
+    ceguiRenderer = &CEGUI::OgreRenderer::bootstrapSystem();
+    CEGUI::Imageset::setDefaultResourceGroup("Imagesets");
+    CEGUI::Font::setDefaultResourceGroup("Fonts");
+    CEGUI::Scheme::setDefaultResourceGroup("Schemes");
+    CEGUI::WidgetLookManager::setDefaultResourceGroup("LookNFeel");
+    CEGUI::WindowManager::setDefaultResourceGroup("Layouts");
+    CEGUI::SchemeManager::getSingleton().create("TaharezLook.scheme");
 }
 
 void BaseRoot::initResourceManager()

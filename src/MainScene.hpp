@@ -33,6 +33,13 @@ private:
     void updateMouse();
     void updateAnimations();
 
+    bool keyPressed( const OIS::KeyEvent& evt );
+    bool keyReleased( const OIS::KeyEvent& evt );
+
+    bool mouseMoved( const OIS::MouseEvent& evt );
+    bool mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
+    bool mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
+
 public:
     MainScene( std::string _sceneName );
     ~MainScene();

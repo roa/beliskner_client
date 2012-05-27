@@ -17,8 +17,11 @@ FrameListener::FrameListener( Ogre::RenderWindow *_window )
     parameters.insert( std::make_pair( "WINDOW", windowHandleString.str() ) );
 
     inputManager = OIS::InputManager::createInputSystem( parameters );
-    keyboard = static_cast<OIS::Keyboard*>( inputManager->createInputObject( OIS::OISKeyboard, false ) );
-    mouse    = static_cast<OIS::Mouse*>( inputManager->createInputObject( OIS::OISMouse, false ) );
+    keyboard = static_cast<OIS::Keyboard*>( inputManager->createInputObject( OIS::OISKeyboard, true ) );
+    mouse    = static_cast<OIS::Mouse*>( inputManager->createInputObject( OIS::OISMouse, true ) );
+
+    keyboard->setEventCallback( this );
+    mouse->setEventCallback( this );
 
     leaveApp = false;
 }
@@ -44,6 +47,36 @@ bool FrameListener::frameEnded( const Ogre::FrameEvent &evt )
 
 bool FrameListener::frameRenderingQueued( const Ogre::FrameEvent &evt )
 {
+    return true;
+}
+
+bool FrameListener::keyPressed( const OIS::KeyEvent& evt )
+{
+    base->sceneManager->currentScene->keyPressed( evt );
+    return true;
+}
+
+bool FrameListener::keyReleased( const OIS::KeyEvent& evt )
+{
+    base->sceneManager->currentScene->keyReleased( evt );
+    return true;
+}
+
+bool FrameListener::mouseMoved( const OIS::MouseEvent& evt )
+{
+    base->sceneManager->currentScene->mouseMoved( evt );
+    return true;
+}
+
+bool FrameListener::mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
+{
+    base->sceneManager->currentScene->mousePressed( evt, id );
+    return true;
+}
+
+bool FrameListener::mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
+{
+    base->sceneManager->currentScene->mouseReleased( evt, id );
     return true;
 }
 

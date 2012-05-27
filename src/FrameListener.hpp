@@ -12,7 +12,7 @@ namespace Beliskner
 class InputHandler;
 class BaseRoot;
 
-class FrameListener : public Ogre::FrameListener
+class FrameListener : public Ogre::FrameListener, public OIS::KeyListener, public OIS::MouseListener
 {
 
 public:
@@ -29,6 +29,13 @@ public:
     bool frameStarted( const Ogre::FrameEvent &evt );
     bool frameEnded( const Ogre::FrameEvent &evt );
     bool frameRenderingQueued( const Ogre::FrameEvent &evt );
+
+    bool keyPressed( const OIS::KeyEvent& evt );
+    bool keyReleased( const OIS::KeyEvent& evt );
+
+    bool mouseMoved( const OIS::MouseEvent& evt );
+    bool mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
+    bool mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
 };
 
 }
