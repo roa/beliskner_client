@@ -1,9 +1,9 @@
-#include "DemoScene2.hpp"
+#include "NextScene.hpp"
 
 namespace Beliskner
 {
 
-DemoScene2::DemoScene2( std::string _sceneName )
+NextScene::NextScene( std::string _sceneName )
 {
     base = BaseRoot::getSingletonPtr();
     sceneName = _sceneName;
@@ -12,43 +12,43 @@ DemoScene2::DemoScene2( std::string _sceneName )
     sceneSwitch  = false;
 }
 
-DemoScene2::~DemoScene2()
+NextScene::~NextScene()
 {
 
 }
 
-void DemoScene2::createScene()
+void NextScene::createScene()
 {
     sceneSwitch = false;
     Ogre::Entity *ent = sceneManager->createEntity( "ninja.mesh" );
     sceneManager->getRootSceneNode()->attachObject( ent );
 }
 
-void DemoScene2::prepareScene()
+void NextScene::prepareScene()
 {
     initSceneManager();
     initCamera();
 }
 
-void DemoScene2::exitScene()
+void NextScene::exitScene()
 {
     destroyCamera();
     destroySceneManager();
 }
 
-void DemoScene2::switchScene()
+void NextScene::switchScene()
 {
     if( sceneSwitch )
         base->sceneManager->switchToScene( "mainScene" );
 }
 
-void DemoScene2::initSceneManager()
+void NextScene::initSceneManager()
 {
-    base->logger->logMessage( "initiating scenemanager in DemoScene2..." );
+    base->logger->logMessage( "initiating scenemanager in NextScene..." );
     sceneManager = base->root->createSceneManager( Ogre::ST_GENERIC );
 }
 
-void DemoScene2::initCamera()
+void NextScene::initCamera()
 {
     base->logger->logMessage( "initiating camera..." );
     camera = sceneManager->createCamera( "Camera" );
@@ -59,24 +59,24 @@ void DemoScene2::initCamera()
     base->viewport->setCamera( camera );
 }
 
-void DemoScene2::destroySceneManager()
+void NextScene::destroySceneManager()
 {
     base->root->destroySceneManager( sceneManager );
 }
 
-void DemoScene2::destroyCamera()
+void NextScene::destroyCamera()
 {
     sceneManager->destroyCamera( camera );
 }
 
-void DemoScene2::updateScene()
+void NextScene::updateScene()
 {
     updateKeyboard();
     updateMouse();
     switchScene();
 }
 
-void DemoScene2::updateKeyboard()
+void NextScene::updateKeyboard()
 {
     base->frameListener->keyboard->capture();
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_ESCAPE ) )
@@ -89,7 +89,7 @@ void DemoScene2::updateKeyboard()
     }
 }
 
-void DemoScene2::updateMouse()
+void NextScene::updateMouse()
 {
 
 }

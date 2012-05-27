@@ -108,10 +108,10 @@ void BaseRoot::initFrameListener()
 void BaseRoot::initSceneManager()
 {
     sceneManager = new SceneManager();
-    DemoScene *demoscene = new DemoScene( "mainScene" );
-    sceneManager->addNewScene( demoscene );
-    DemoScene2 *demoscene2 = new DemoScene2( "nextScene" );
-    sceneManager->addNewScene( demoscene2 );
+    MainScene *mainScene = new MainScene( "mainScene" );
+    sceneManager->addNewScene( mainScene );
+    NextScene *nextScene = new NextScene( "nextScene" );
+    sceneManager->addNewScene( nextScene );
 }
 
 void BaseRoot::renderOneFrame()

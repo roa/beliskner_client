@@ -1,9 +1,9 @@
-#include "DemoScene.hpp"
+#include "MainScene.hpp"
 
 namespace Beliskner
 {
 
-DemoScene::DemoScene( std::string _sceneName )
+MainScene::MainScene( std::string _sceneName )
 {
     sceneName = _sceneName;
     base = BaseRoot::getSingletonPtr();
@@ -17,12 +17,12 @@ DemoScene::DemoScene( std::string _sceneName )
     std::cout << "const" << std::endl;
 }
 
-DemoScene::~DemoScene()
+MainScene::~MainScene()
 {
 
 }
 
-void DemoScene::createScene()
+void MainScene::createScene()
 {
     sceneSwitch = false;
 
@@ -54,13 +54,13 @@ void DemoScene::createScene()
     sceneManager->setShadowTechnique( Ogre::SHADOWTYPE_STENCIL_ADDITIVE );
 }
 
-void DemoScene::prepareScene()
+void MainScene::prepareScene()
 {
     initSceneManager();
     initCamera();
 }
 
-void DemoScene::exitScene()
+void MainScene::exitScene()
 {
     playerPosition = playerNode->getPosition();
     cameraPosition = camera->getPosition();
@@ -68,19 +68,19 @@ void DemoScene::exitScene()
     destroySceneManager();
 }
 
-void DemoScene::switchScene()
+void MainScene::switchScene()
 {
     if( sceneSwitch )
         base->sceneManager->switchToScene( "nextScene" );
 }
 
-void DemoScene::initSceneManager()
+void MainScene::initSceneManager()
 {
-    base->logger->logMessage( "initiating scenemanager in DemoScene..." );
+    base->logger->logMessage( "initiating scenemanager in MainScene..." );
     sceneManager = base->root->createSceneManager( Ogre::ST_GENERIC );
 }
 
-void DemoScene::initCamera()
+void MainScene::initCamera()
 {
     base->logger->logMessage( "initiating camera..." );
     camera = sceneManager->createCamera( "Camera" );
@@ -91,17 +91,17 @@ void DemoScene::initCamera()
     base->viewport->setCamera( camera );
 }
 
-void DemoScene::destroySceneManager()
+void MainScene::destroySceneManager()
 {
     base->root->destroySceneManager( sceneManager );
 }
 
-void DemoScene::destroyCamera()
+void MainScene::destroyCamera()
 {
     sceneManager->destroyCamera( camera );
 }
 
-void DemoScene::updateScene()
+void MainScene::updateScene()
 {
     updateMouse();
     updateKeyboard();
@@ -109,7 +109,7 @@ void DemoScene::updateScene()
     switchScene();
 }
 
-void DemoScene::updateKeyboard()
+void MainScene::updateKeyboard()
 {
     base->frameListener->keyboard->capture();
 
@@ -191,7 +191,7 @@ void DemoScene::updateKeyboard()
     playerNode->yaw( Ogre::Degree( playerRotation ) );
 }
 
-void DemoScene::updateMouse()
+void MainScene::updateMouse()
 {
     base->frameListener->mouse->capture();
 
@@ -202,7 +202,7 @@ void DemoScene::updateMouse()
     camera->pitch( Ogre::Radian( rotY ) );
 }
 
-void DemoScene::updateAnimations()
+void MainScene::updateAnimations()
 {
     if( playerWalked )
     {

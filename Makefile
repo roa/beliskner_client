@@ -35,9 +35,9 @@ OBJDIR_RELEASE = obj/Release
 DEP_RELEASE = 
 OUT_RELEASE = ./bin/Release/beliskner_client
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/src/BaseRoot.o $(OBJDIR_DEBUG)/src/DemoApp.o $(OBJDIR_DEBUG)/src/DemoScene.o $(OBJDIR_DEBUG)/src/DemoScene2.o $(OBJDIR_DEBUG)/src/FrameListener.o $(OBJDIR_DEBUG)/src/SceneManager.o $(OBJDIR_DEBUG)/src/main.o
+OBJ_DEBUG = $(OBJDIR_DEBUG)/src/BaseRoot.o $(OBJDIR_DEBUG)/src/DemoApp.o $(OBJDIR_DEBUG)/src/FrameListener.o $(OBJDIR_DEBUG)/src/MainScene.o $(OBJDIR_DEBUG)/src/NextScene.o $(OBJDIR_DEBUG)/src/SceneManager.o $(OBJDIR_DEBUG)/src/main.o
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/src/BaseRoot.o $(OBJDIR_RELEASE)/src/DemoApp.o $(OBJDIR_RELEASE)/src/DemoScene.o $(OBJDIR_RELEASE)/src/DemoScene2.o $(OBJDIR_RELEASE)/src/FrameListener.o $(OBJDIR_RELEASE)/src/SceneManager.o $(OBJDIR_RELEASE)/src/main.o
+OBJ_RELEASE = $(OBJDIR_RELEASE)/src/BaseRoot.o $(OBJDIR_RELEASE)/src/DemoApp.o $(OBJDIR_RELEASE)/src/FrameListener.o $(OBJDIR_RELEASE)/src/MainScene.o $(OBJDIR_RELEASE)/src/NextScene.o $(OBJDIR_RELEASE)/src/SceneManager.o $(OBJDIR_RELEASE)/src/main.o
 
 all: debug release
 
@@ -60,14 +60,14 @@ $(OBJDIR_DEBUG)/src/BaseRoot.o: src/BaseRoot.cpp
 $(OBJDIR_DEBUG)/src/DemoApp.o: src/DemoApp.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/DemoApp.cpp -o $(OBJDIR_DEBUG)/src/DemoApp.o
 
-$(OBJDIR_DEBUG)/src/DemoScene.o: src/DemoScene.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/DemoScene.cpp -o $(OBJDIR_DEBUG)/src/DemoScene.o
-
-$(OBJDIR_DEBUG)/src/DemoScene2.o: src/DemoScene2.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/DemoScene2.cpp -o $(OBJDIR_DEBUG)/src/DemoScene2.o
-
 $(OBJDIR_DEBUG)/src/FrameListener.o: src/FrameListener.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/FrameListener.cpp -o $(OBJDIR_DEBUG)/src/FrameListener.o
+
+$(OBJDIR_DEBUG)/src/MainScene.o: src/MainScene.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/MainScene.cpp -o $(OBJDIR_DEBUG)/src/MainScene.o
+
+$(OBJDIR_DEBUG)/src/NextScene.o: src/NextScene.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/NextScene.cpp -o $(OBJDIR_DEBUG)/src/NextScene.o
 
 $(OBJDIR_DEBUG)/src/SceneManager.o: src/SceneManager.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/SceneManager.cpp -o $(OBJDIR_DEBUG)/src/SceneManager.o
@@ -97,14 +97,14 @@ $(OBJDIR_RELEASE)/src/BaseRoot.o: src/BaseRoot.cpp
 $(OBJDIR_RELEASE)/src/DemoApp.o: src/DemoApp.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/DemoApp.cpp -o $(OBJDIR_RELEASE)/src/DemoApp.o
 
-$(OBJDIR_RELEASE)/src/DemoScene.o: src/DemoScene.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/DemoScene.cpp -o $(OBJDIR_RELEASE)/src/DemoScene.o
-
-$(OBJDIR_RELEASE)/src/DemoScene2.o: src/DemoScene2.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/DemoScene2.cpp -o $(OBJDIR_RELEASE)/src/DemoScene2.o
-
 $(OBJDIR_RELEASE)/src/FrameListener.o: src/FrameListener.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/FrameListener.cpp -o $(OBJDIR_RELEASE)/src/FrameListener.o
+
+$(OBJDIR_RELEASE)/src/MainScene.o: src/MainScene.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/MainScene.cpp -o $(OBJDIR_RELEASE)/src/MainScene.o
+
+$(OBJDIR_RELEASE)/src/NextScene.o: src/NextScene.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/NextScene.cpp -o $(OBJDIR_RELEASE)/src/NextScene.o
 
 $(OBJDIR_RELEASE)/src/SceneManager.o: src/SceneManager.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/SceneManager.cpp -o $(OBJDIR_RELEASE)/src/SceneManager.o

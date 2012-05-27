@@ -1,5 +1,5 @@
-#ifndef BELISKNER_DEMOSCENE2_HPP
-#define BELISKNER_DEMOSCENE2_HPP
+#ifndef BELISKNER_NEXTSCENE_HPP
+#define BELISKNER_NEXTSCENE_HPP
 
 #include "BaseScene.hpp"
 #include "BaseRoot.hpp"
@@ -7,7 +7,7 @@
 namespace Beliskner
 {
 
-class DemoScene2 : public BaseScene
+class NextScene : public BaseScene
 {
 private:
     BaseRoot* base;
@@ -26,8 +26,8 @@ private:
     void updateAnimations();
 
 public:
-    DemoScene2( std::string _sceneName );
-    ~DemoScene2();
+    NextScene( std::string _sceneName );
+    ~NextScene();
 
     void createScene();
     void prepareScene();

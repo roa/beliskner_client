@@ -6,8 +6,8 @@
 #include "FrameListener.hpp"
 #include "SceneManager.hpp"
 #include "BaseScene.hpp"
-#include "DemoScene.hpp"
-#include "DemoScene2.hpp"
+#include "MainScene.hpp"
+#include "NextScene.hpp"
 
 namespace Beliskner
 {
