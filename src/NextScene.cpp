@@ -17,14 +17,9 @@ NextScene::NextScene( std::string _sceneName )
     hitMonster       = false;
     hitAni           = false;
     playerTurns      = 0;
-    monsterTurns     = 0;
-    attackMonster    = false;
-    invertMonsterDir = false;
-    magicMonster     = false;
-    hitPlayer        = false;
+
     playerAction     = false;
     playerActionInProgress = false;
-    monsterActionInProgress = false;
 }
 
 NextScene::~NextScene()
@@ -110,7 +105,7 @@ void NextScene::initGui()
 
 void NextScene::initMonster()
 {
-    monster = new Monster( "ninja" );
+    monster = new Monster( "ninja", monsterEnt, monsterNode, this );
 }
 
 void NextScene::destroySceneManager()
@@ -212,67 +207,11 @@ void NextScene::updateAnimations()
         return;
     }
 
-    if( monsterActionInProgress )
+    if( monster->monsterActionInProgress )
     {
-        if( monsterNode->getPosition().z == -23 )
-        {
-            if( hitPlayer )
-            {
-                monsterAttack->setEnabled(true);
-                monsterAttack->addTime( base->timer->getMilliseconds() * 0.001f );
-                if( monsterAttack->hasEnded() )
-                {
-                    monsterAttack->setEnabled(false);
-                    monsterAttack->setTimePosition( 0.0f );
-                    hitPlayer = false;
-                    base->player->playerLife -= monster->monsterStrength;
-                }
-                return;
-            }
-            else
-            {
-                invertMonsterDir = true;
-                monsterNode->yaw( Ogre::Degree( 180 ) );
-            }
-        }
-
-        Ogre::Vector3 transDir(0, 0, 0);
-        if( invertMonsterDir )
-        {
-            transDir.z = 1;
-        }
-        else
-        {
-            transDir.z = -1;
-        }
-        if( attackMonster )
-        {
-            monsterNode->translate( transDir * 0.5f );
-            monsterState->setEnabled( true );
-
-            if( monsterState->hasEnded() )
-            {
-                monsterState->setTimePosition( 0.0f );
-            }
-        }
-        else
-        {
-            monsterState->setTimePosition( 0.0f );
-            monsterState->setEnabled( false );
-        }
-        monsterState->addTime( base->timer->getMilliseconds() * 0.001f );
-
-        if( attackMonster && monsterNode->getPosition().z == 25 )
-        {
-            attackMonster = false;
-            monsterActionInProgress = false;
-            invertMonsterDir = false;
-            monsterNode->yaw( Ogre::Degree( 180 ) );
-            monsterState->setTimePosition( 0.0f );
-        }
+        monster->makeAnimations();
         return;
     }
-
 }
 
 bool NextScene::keyPressed( const OIS::KeyEvent& evt )
@@ -379,26 +318,8 @@ void NextScene::createScene()
     hitAni = playerEnt->getAnimationState( "DrawSwords" );
     hitAni->setLoop( false );
 
-    monsterEnt = sceneManager->createEntity( "ninja.mesh" );
-    monsterNode = sceneManager->getRootSceneNode()->createChildSceneNode();
-    monsterNode->setPosition( 0, -5, 25 );
-    monsterNode->attachObject( monsterEnt );
-    monsterNode->scale( 0.04f, 0.04f, 0.04f );
+    monster->setUpScene();
 
-    monsterState = monsterEnt->getAnimationState( "Walk" );
-    monsterState->setLoop( false );
-
-    monsterAttack = monsterEnt->getAnimationState( "Attack1");
-    monsterAttack->setLoop( false );
-
-    /*
-    Ogre::AnimationStateSet* set = monsterEnt->getAllAnimationStates();
-    Ogre::AnimationStateIterator iter = set->getAnimationStateIterator();
-    while( iter.hasMoreElements())
-    {
-        std::cout << iter.getNext()->getAnimationName() << std::endl;
-
-    */
 }
 
 void NextScene::prepareScene()
@@ -416,7 +337,6 @@ void NextScene::exitScene()
     destroySceneManager();
     delete monster;
     playerTurns  = 0;
-    monsterTurns = 0;
 }
 
 void NextScene::switchScene()
@@ -427,7 +347,7 @@ void NextScene::switchScene()
 
 void NextScene::updateScene()
 {
-    if( !monsterActionInProgress && !playerActionInProgress )
+    if( !monster->monsterActionInProgress && !playerActionInProgress )
         updateTurn();
     updateGui();
     updateKeyboard();
@@ -439,8 +359,8 @@ void NextScene::updateScene()
 void NextScene::updateTurn()
 {
     float turnRatioShould = monster->monsterSpeed / base->player->playerSpeed;
-    float turnRatioIs = ( monsterTurns + 1 ) / ( playerTurns + 1 );
-    if( playerTurns == 0 && monsterTurns == 0 )
+    float turnRatioIs = ( monster->monsterTurns + 1 ) / ( playerTurns + 1 );
+    if( playerTurns == 0 && monster->monsterTurns == 0 )
     {
         srand( time( NULL ) );
         if( rand() % 2 )
@@ -464,10 +384,10 @@ void NextScene::updateTurn()
     if( !playerAction )
     {
         std::cout << "monsterTrn" << std::endl;
-        ++monsterTurns;
-        monsterActionInProgress = true;
-        hitPlayer = true;
-        attackMonster = true;
+        ++monster->monsterTurns;
+        monster->monsterActionInProgress = true;
+        monster->hitPlayer = true;
+        monster->attackMonster = true;
     }
 }
 

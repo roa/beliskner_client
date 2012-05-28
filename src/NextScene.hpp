@@ -11,6 +11,8 @@
 namespace Beliskner
 {
 
+class Monster;
+
 class NextScene : public BaseScene
 {
 private:
@@ -33,15 +35,9 @@ private:
     Ogre::AnimationState    *monsterState;
     Ogre::AnimationState    *monsterAttack;
 
-    bool attackMonster;
-    bool hitPlayer;
-    bool invertMonsterDir;
-    bool magicMonster;
-    int  monsterTurns;
 
     bool playerAction;
     bool playerActionInProgress;
-    bool monsterActionInProgress;
 
     CEGUI::DefaultWindow    *displayedPlayerStatus;
     CEGUI::OgreRenderer     *ceguiRenderer;
