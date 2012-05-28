@@ -30,10 +30,10 @@ public:
     bool playerActionInProgress;
 
     std::string name;
-    int         playerLife;
-    int         playerMana;
-    int         playerSpeed;
-    int         playerStrength;
+    int playerLife;
+    int playerMana;
+    int playerSpeed;
+    int playerStrength;
 
     void setUpScene();
     void leaveScene();

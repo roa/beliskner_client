@@ -39,7 +39,7 @@ void Monster::setUpScene()
     monsterState = monsterEnt->getAnimationState( "Walk" );
     monsterState->setLoop( false );
 
-    monsterAttack = monsterEnt->getAnimationState( "Attack1");
+    monsterAttack = monsterEnt->getAnimationState( "Attack1" );
     monsterAttack->setLoop( false );
 }
 
@@ -49,11 +49,11 @@ void Monster::makeAnimations()
     {
         if( hitPlayer )
         {
-            monsterAttack->setEnabled(true);
+            monsterAttack->setEnabled( true );
             monsterAttack->addTime( base->timer->getMilliseconds() * 0.001f );
             if( monsterAttack->hasEnded() )
             {
-                monsterAttack->setEnabled(false);
+                monsterAttack->setEnabled( false );
                 monsterAttack->setTimePosition( 0.0f );
                 hitPlayer = false;
                 base->player->playerLife -= monsterStrength;
@@ -67,7 +67,7 @@ void Monster::makeAnimations()
         }
     }
 
-    Ogre::Vector3 transDir(0, 0, 0);
+    Ogre::Vector3 transDir( 0, 0, 0 );
     if( invertMonsterDir )
     {
         transDir.z = 1;
@@ -158,7 +158,7 @@ void Monster::load( lua_State *L, const char* fname )
     while( lua_next( L, 1 ) != 0 )
     {
         monsterAttacks.push_back( lua_tostring( L, -1 ));
-        lua_pop(L, 1);
+        lua_pop( L, 1 );
     }
 }
 

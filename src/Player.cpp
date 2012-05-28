@@ -10,20 +10,18 @@ Player::Player()
     playerMana      = 500;
     playerSpeed     = 10;
     playerStrength  = 10;
-
-    playerEnt   = NULL;
-    playerNode  = NULL;
-    aniState    = NULL;
-    aniStateTop = NULL;
-    hitAni      = NULL;
-
-    attackPlayer = false;
-    hitMonster = false;
+    playerEnt       = NULL;
+    playerNode      = NULL;
+    aniState        = NULL;
+    aniStateTop     = NULL;
+    hitAni          = NULL;
+    attackPlayer    = false;
+    hitMonster      = false;
     invertPlayerDir = false;
-    magicPlayer = false;
-    playerTurns = 0;
-    playerActionInProgress = false;
+    magicPlayer     = false;
+    playerTurns     = 0;
 
+    playerActionInProgress = false;
     base = BaseRoot::getSingletonPtr();
 }
 
@@ -34,12 +32,12 @@ Player::~Player()
 
 void Player::setUpScene()
 {
-    playerEnt = base->sceneManager->currentScene->sceneManager->createEntity( "Sinbad.mesh" );
+    playerEnt  = base->sceneManager->currentScene->sceneManager->createEntity( "Sinbad.mesh" );
     playerNode = base->sceneManager->currentScene->sceneManager->getRootSceneNode()->createChildSceneNode();
     playerNode->setPosition( 0, 0, -25 );
     playerNode->attachObject( playerEnt );
 
-    aniState    = playerEnt->getAnimationState( "RunBase" );
+    aniState = playerEnt->getAnimationState( "RunBase" );
     aniState->setLoop( false );
 
     aniStateTop = playerEnt->getAnimationState( "RunTop" );
@@ -51,17 +49,16 @@ void Player::setUpScene()
 
 void Player::leaveScene()
 {
-    playerEnt   = NULL;
-    playerNode  = NULL;
-    aniState    = NULL;
-    aniStateTop = NULL;
-    hitAni      = NULL;
-
-    attackPlayer = false;
-    hitMonster = false;
+    playerEnt       = NULL;
+    playerNode      = NULL;
+    aniState        = NULL;
+    aniStateTop     = NULL;
+    hitAni          = NULL;
+    attackPlayer    = false;
+    hitMonster      = false;
     invertPlayerDir = false;
-    magicPlayer = false;
-    playerTurns = 0;
+    magicPlayer     = false;
+    playerTurns     = 0;
 }
 
 void Player::makeAnimations()
@@ -70,11 +67,11 @@ void Player::makeAnimations()
     {
         if( hitMonster )
         {
-            hitAni->setEnabled(true);
+            hitAni->setEnabled( true );
             hitAni->addTime( base->timer->getMilliseconds() * 0.001f );
             if( hitAni->hasEnded() )
             {
-                hitAni->setEnabled(false);
+                hitAni->setEnabled( false );
                 hitAni->setTimePosition( 0.0f );
                 hitMonster = false;
             }
@@ -87,7 +84,7 @@ void Player::makeAnimations()
         }
     }
 
-    Ogre::Vector3 transDir(0, 0, 0);
+    Ogre::Vector3 transDir( 0, 0, 0 );
     if( invertPlayerDir )
     {
         transDir.z = -1;

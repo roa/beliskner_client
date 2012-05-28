@@ -131,7 +131,7 @@ void MainScene::updateKeyboard()
     }
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_S ) )
     {
-        camTranslate += Ogre::Vector3( 0, 0, 1);
+        camTranslate += Ogre::Vector3( 0, 0, 1 );
     }
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_A ) )
     {
@@ -158,7 +158,7 @@ void MainScene::updateKeyboard()
     }
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_DOWN ) )
     {
-        playerTranslate += Ogre::Vector3( 0, 0, 1);
+        playerTranslate += Ogre::Vector3( 0, 0, 1 );
         playerRotation   = 0;
         playerWalked     = true;
         down             = true;

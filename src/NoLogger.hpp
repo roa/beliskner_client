@@ -9,9 +9,9 @@ namespace Beliskner
 
 class NoLogger : public CEGUI::Logger
 {
-    void logEvent (const CEGUI::String&, CEGUI::LoggingLevel)
+    void logEvent ( const CEGUI::String&, CEGUI::LoggingLevel )
     {}
-    void setLogFilename(const CEGUI::String&, bool)
+    void setLogFilename( const CEGUI::String&, bool )
     {}
 };
 

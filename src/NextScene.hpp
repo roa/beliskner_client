@@ -46,7 +46,7 @@ private:
     bool mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
     bool mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
 
-    CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID);
+    CEGUI::MouseButton convertButton( OIS::MouseButtonID buttonID );
 
     bool attackButtonClicked( const CEGUI::EventArgs& );
     bool magicButtonClicked( const CEGUI::EventArgs& );
