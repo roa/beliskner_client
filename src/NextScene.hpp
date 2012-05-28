@@ -23,6 +23,7 @@ private:
 
     void initSceneManager();
     void initCamera();
+    void initGui();
 
     void destroySceneManager();
     void destroyCamera();
@@ -39,6 +40,14 @@ private:
     bool mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
 
     CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID);
+
+    bool attackButtonClicked( const CEGUI::EventArgs& );
+    bool magicButtonClicked( const CEGUI::EventArgs& );
+    std::string playerStatusString();
+
+    std::string playerName;
+    int playerLife;
+    int playerMana;
 
 public:
     NextScene( std::string _sceneName );

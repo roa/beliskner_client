@@ -5,6 +5,10 @@ namespace Beliskner
 
 NextScene::NextScene( std::string _sceneName )
 {
+    playerName = "playername";
+    std::stringstream tempstream;
+    playerLife = 500;
+    playerMana = 500;
     base = BaseRoot::getSingletonPtr();
     ceguiRenderer = base->ceguiRenderer;
     sceneName = _sceneName;
@@ -22,25 +26,36 @@ void NextScene::createScene()
 {
     sceneSwitch = false;
     Ogre::Entity *ent = sceneManager->createEntity( "penguin.mesh" );
-    //sceneManager->getRootSceneNode()->attachObject( ent );
-        ceguiRenderer= &CEGUI::OgreRenderer::bootstrapSystem();
-        CEGUI::SchemeManager::getSingleton().create( "TaharezLook.scheme" );
-        CEGUI::System::getSingleton().setDefaultFont( "DejaVuSans-10" );
-        CEGUI::System::getSingleton().setDefaultMouseCursor( "TaharezLook", "MouseArrow" );
-        CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Informative); // this is recommended to help with debugging, but not neccessary
+    sceneManager->getRootSceneNode()->attachObject( ent );
 
-        myRoot = CEGUI::WindowManager::getSingleton().createWindow( "DefaultWindow", "RootWindow" );
-        CEGUI::System::getSingleton().setGUISheet( myRoot );
-        CEGUI::FrameWindow* fWnd = static_cast<CEGUI::FrameWindow*>(
-    CEGUI::WindowManager::getSingleton().createWindow( "TaharezLook/FrameWindow", "testWindow" ));
-    myRoot->addChildWindow( fWnd );
 
+
+}
+
+bool NextScene::attackButtonClicked( const CEGUI::EventArgs& )
+{
+    std::cout << "attack" << std::endl;
+    return true;
+}
+
+bool NextScene::magicButtonClicked( const CEGUI::EventArgs& )
+{
+    std::cout << "magic" << std::endl;
+    return true;
+}
+
+std::string NextScene::playerStatusString()
+{
+    std::stringstream playerStatus;
+    playerStatus << "HP " << playerLife << " MP " << playerMana;
+    return playerStatus.str();
 }
 
 void NextScene::prepareScene()
 {
     initSceneManager();
     initCamera();
+    initGui();
 }
 
 void NextScene::exitScene()
@@ -71,6 +86,77 @@ void NextScene::initCamera()
     camera->setNearClipDistance( 5 );
     camera->setAspectRatio( Ogre::Real( base->viewport->getActualWidth() ) / Ogre::Real( base->viewport->getActualHeight() ) );
     base->viewport->setCamera( camera );
+}
+
+void NextScene::initGui()
+{
+    ceguiRenderer= &CEGUI::OgreRenderer::bootstrapSystem();
+    CEGUI::SchemeManager::getSingleton().create( "TaharezLook.scheme" );
+    CEGUI::System::getSingleton().setDefaultFont( "DejaVuSans-10" );
+    CEGUI::System::getSingleton().setDefaultMouseCursor( "TaharezLook", "MouseArrow" );
+
+    myRoot = CEGUI::WindowManager::getSingleton().createWindow( "DefaultWindow", "RootWindow" );
+    CEGUI::System::getSingleton().setGUISheet( myRoot );
+
+    CEGUI::Window* MenuBackground = CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticImage", "Background");
+    MenuBackground->setPosition( CEGUI::UVector2( CEGUI::UDim( 0.004f, 0.0f ), CEGUI::UDim( 0.85f, 0.0f) ) );
+    MenuBackground->setSize( CEGUI::UVector2( CEGUI::UDim( 0.14f, 0.0f ), CEGUI::UDim( 0.14f, 0.0f ) ) );  // full screen
+    MenuBackground->setProperty( "Alpha", "0.50" );
+    myRoot->addChildWindow( MenuBackground );
+
+    CEGUI::Window* StatsBackground = CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticImage", "StatsBackground");
+    StatsBackground->setPosition( CEGUI::UVector2( CEGUI::UDim( 0.70f, 0.0f ), CEGUI::UDim( 0.92f, 0.0f) ) );
+    StatsBackground->setSize( CEGUI::UVector2( CEGUI::UDim( 0.295f, 0.0f ), CEGUI::UDim( 0.07f, 0.0f ) ) );  // full screen
+    StatsBackground->setProperty( "Alpha", "0.50" );
+    myRoot->addChildWindow( StatsBackground );
+
+    CEGUI::PushButton* attackLabel = static_cast<CEGUI::PushButton*>(CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/Button", "attackLabel"));
+    attackLabel->setSize(CEGUI::UVector2( CEGUI::UDim( 0.12f, 0.0f ), CEGUI::UDim( 0.05f, 0.0f ) ));
+    attackLabel->setPosition( CEGUI::UVector2( CEGUI::UDim( 0.012f, 0.0f ), CEGUI::UDim( 0.86f, 0.0f) ));
+    attackLabel->subscribeEvent(CEGUI::PushButton::EventClicked,CEGUI::Event::Subscriber(&NextScene::attackButtonClicked,this));
+    attackLabel->setText( "Attack" );
+    myRoot->addChildWindow(attackLabel);
+
+    CEGUI::PushButton* magicLabel = static_cast<CEGUI::PushButton*>(CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/Button", "magicLabel"));
+    magicLabel->setText( "Magic" );
+    magicLabel->setSize(CEGUI::UVector2( CEGUI::UDim( 0.12f, 0.0f ), CEGUI::UDim( 0.05f, 0.0f ) ));
+    magicLabel->setPosition( CEGUI::UVector2( CEGUI::UDim( 0.012f, 0.0f ), CEGUI::UDim( 0.92f, 0.0f) ));
+    magicLabel->subscribeEvent(CEGUI::PushButton::EventClicked,CEGUI::Event::Subscriber(&NextScene::magicButtonClicked,this));
+    myRoot->addChildWindow(magicLabel);
+
+    CEGUI::DefaultWindow* displayedPlayerName = static_cast<CEGUI::DefaultWindow*>(CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticText", "playerName"));
+    displayedPlayerName->setText( playerName );
+    displayedPlayerName->setProperty("TextColours", "tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFF0000");
+    displayedPlayerName->setProperty("VertFormatting", "VertCentred");
+    displayedPlayerName->setProperty("HorzFormatting", "HorzCentred");
+    displayedPlayerName->setPosition(CEGUI::UVector2( CEGUI::UDim( 0.705f, 0.0f ), CEGUI::UDim( 0.93f, 0.0f) ) );
+    displayedPlayerName->setSize( CEGUI::UVector2( CEGUI::UDim( 0.10f, 0.0f ), CEGUI::UDim( 0.05f, 0.0f) ) );
+    displayedPlayerName->setProperty("BackgroundEnabled", "false");
+    displayedPlayerName->setProperty("FrameEnabled", "false");
+    myRoot->addChildWindow(displayedPlayerName);
+
+    CEGUI::DefaultWindow* displayedPlayerLife = static_cast<CEGUI::DefaultWindow*>(CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticText", "playerLife"));
+    displayedPlayerLife->setText( playerStatusString() );
+    displayedPlayerLife->setProperty("TextColours", "tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFF0000");
+    displayedPlayerLife->setProperty("VertFormatting", "VertCentred");
+    displayedPlayerLife->setProperty("HorzFormatting", "HorzCentred");
+    displayedPlayerLife->setPosition(CEGUI::UVector2( CEGUI::UDim( 0.775f, 0.0f ), CEGUI::UDim( 0.93f, 0.0f) ) );
+    displayedPlayerLife->setSize( CEGUI::UVector2( CEGUI::UDim( 0.24f, 0.0f ), CEGUI::UDim( 0.05f, 0.0f) ) );
+    displayedPlayerLife->setProperty("BackgroundEnabled", "false");
+    displayedPlayerLife->setProperty("FrameEnabled", "false");
+    myRoot->addChildWindow(displayedPlayerLife);
+/*
+    CEGUI::DefaultWindow* displayedPlayerMana = static_cast<CEGUI::DefaultWindow*>(CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticText", "playerMana"));
+    displayedPlayerMana->setText( playerMP );
+    displayedPlayerMana->setProperty("TextColours", "tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFF0000");
+    displayedPlayerMana->setProperty("VertFormatting", "VertCentred");
+    displayedPlayerMana->setProperty("HorzFormatting", "HorzCentred");
+    displayedPlayerMana->setPosition(CEGUI::UVector2( CEGUI::UDim( 0.955f, 0.0f ), CEGUI::UDim( 0.93f, 0.0f) ) );
+    displayedPlayerMana->setSize( CEGUI::UVector2( CEGUI::UDim( 0.12f, 0.0f ), CEGUI::UDim( 0.05f, 0.0f) ) );
+    displayedPlayerMana->setProperty("BackgroundEnabled", "false");
+    displayedPlayerMana->setProperty("FrameEnabled", "false");
+    myRoot->addChildWindow(displayedPlayerMana);
+*/
 }
 
 void NextScene::destroySceneManager()
