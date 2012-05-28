@@ -17,27 +17,9 @@ class NextScene : public BaseScene
 {
 private:
     BaseRoot                *base;
-    Ogre::Entity            *playerEnt;
-    Ogre::SceneNode         *playerNode;
-    Ogre::AnimationState    *aniState;
-    Ogre::AnimationState    *aniStateTop;
-    Ogre::AnimationState    *hitAni;
-
-    bool attackPlayer;
-    bool hitMonster;
-    bool invertPlayerDir;
-    bool magicPlayer;
-    int  playerTurns;
-
     Monster                 *monster;
-    Ogre::Entity            *monsterEnt;
-    Ogre::SceneNode         *monsterNode;
-    Ogre::AnimationState    *monsterState;
-    Ogre::AnimationState    *monsterAttack;
-
 
     bool playerAction;
-    bool playerActionInProgress;
 
     CEGUI::DefaultWindow    *displayedPlayerStatus;
     CEGUI::OgreRenderer     *ceguiRenderer;

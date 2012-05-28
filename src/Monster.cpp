@@ -3,7 +3,7 @@
 namespace Beliskner
 {
 
-Monster::Monster( std::string _name, Ogre::Entity *_monsterEnt, Ogre::SceneNode *_monsterNode, BaseScene *_currentScene )
+Monster::Monster( std::string _name, BaseScene *_currentScene )
 {
     base = BaseRoot::getSingletonPtr();
     attackMonster    = false;
@@ -14,8 +14,7 @@ Monster::Monster( std::string _name, Ogre::Entity *_monsterEnt, Ogre::SceneNode 
 
     monsterActionInProgress = false;
     currentScene = _currentScene;
-    monsterEnt   = _monsterEnt;
-    monsterNode  = _monsterNode;
+
     name         = _name;
     L            = luaL_newstate();
 

@@ -19,6 +19,7 @@ namespace Beliskner
 
 class FrameListener;
 class SceneManager;
+class Player;
 
 class BaseRoot : public Ogre::Singleton<BaseRoot>
 {

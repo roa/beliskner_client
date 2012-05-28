@@ -13,7 +13,7 @@ namespace Beliskner
 class Monster
 {
 public:
-    Monster( std::string _name, Ogre::Entity *_monsterEnt, Ogre::SceneNode *_monsterNode, BaseScene *_currentScene );
+    Monster( std::string _name, BaseScene *_currentScene );
     ~Monster();
 
     BaseRoot* base;
