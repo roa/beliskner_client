@@ -14,7 +14,6 @@ MainScene::MainScene( std::string _sceneName )
     playerPosition = ( 0, 0, 0 );
     playerWalked = false;
     sceneSwitch  = false;
-    std::cout << "const" << std::endl;
 }
 
 MainScene::~MainScene()

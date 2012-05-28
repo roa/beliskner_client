@@ -3,6 +3,7 @@
 
 #include "BaseScene.hpp"
 #include "BaseRoot.hpp"
+#include "Monster.hpp"
 
 #include <CEGUI/CEGUI.h>
 #include <CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h>
@@ -10,28 +11,48 @@
 namespace Beliskner
 {
 
-class NoLogger : public CEGUI::Logger
-{
-    void logEvent (const CEGUI::String&, CEGUI::LoggingLevel)
-    {}
-    void setLogFilename(const CEGUI::String&, bool)
-    {}
-};
-
 class NextScene : public BaseScene
 {
 private:
-    BaseRoot* base;
+    BaseRoot                *base;
+    Ogre::Entity            *playerEnt;
     Ogre::SceneNode         *playerNode;
+    Ogre::AnimationState    *aniState;
+    Ogre::AnimationState    *aniStateTop;
+    Ogre::AnimationState    *hitAni;
 
+    bool attackPlayer;
+    bool hitMonster;
+    bool invertPlayerDir;
+    bool magicPlayer;
+    int  playerTurns;
+
+    Monster                 *monster;
+    Ogre::Entity            *monsterEnt;
+    Ogre::SceneNode         *monsterNode;
+    Ogre::AnimationState    *monsterState;
+    Ogre::AnimationState    *monsterAttack;
+
+    bool attackMonster;
+    bool hitPlayer;
+    bool invertMonsterDir;
+    bool magicMonster;
+    int  monsterTurns;
+
+    bool playerAction;
+    bool playerActionInProgress;
+    bool monsterActionInProgress;
+
+    CEGUI::DefaultWindow    *displayedPlayerStatus;
     CEGUI::OgreRenderer     *ceguiRenderer;
-    CEGUI::Window* myRoot;
+    CEGUI::Window           *myRoot;
 
     bool sceneSwitch;
 
     void initSceneManager();
     void initCamera();
     void initGui();
+    void initMonster();
 
     void destroySceneManager();
     void destroyCamera();
@@ -51,11 +72,8 @@ private:
 
     bool attackButtonClicked( const CEGUI::EventArgs& );
     bool magicButtonClicked( const CEGUI::EventArgs& );
-    std::string playerStatusString();
 
-    std::string playerName;
-    int playerLife;
-    int playerMana;
+    std::string playerStatusString();
 
 public:
     NextScene( std::string _sceneName );
@@ -67,6 +85,8 @@ public:
     void switchScene();
 
     void updateScene();
+    void updateTurn();
+    void updateGui();
 };
 
 }

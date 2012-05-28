@@ -8,6 +8,8 @@
 #include "BaseScene.hpp"
 #include "MainScene.hpp"
 #include "NextScene.hpp"
+#include "NoLogger.hpp"
+#include "Player.hpp"
 
 #include <CEGUI/CEGUI.h>
 #include <CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h>
@@ -30,6 +32,7 @@ public:
 
     FrameListener       *frameListener;
     SceneManager        *sceneManager;
+    Player              *player;
 
     CEGUI::OgreRenderer *ceguiRenderer;
 
@@ -42,6 +45,7 @@ public:
     void initViewport();
     void initTimer();
     void initGui();
+    void initPlayer();
 
     void initResourceManager();
     void initFrameListener();

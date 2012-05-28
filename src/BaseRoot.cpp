@@ -13,6 +13,7 @@ BaseRoot::BaseRoot()
     frameListener   = NULL;
     viewport        = NULL;
     timer           = NULL;
+    player          = NULL;
 
     keepRunning     = true;
     initLogManager();
@@ -42,7 +43,8 @@ void BaseRoot::initOgre()
     initTimer();
     initResourceManager();
     initFrameListener();
-    //initGui();
+    initGui();
+    initPlayer();
 }
 
 void BaseRoot::initRoot()
@@ -79,13 +81,7 @@ void BaseRoot::initTimer()
 
 void BaseRoot::initGui()
 {
-    ceguiRenderer = &CEGUI::OgreRenderer::bootstrapSystem();
-    CEGUI::Imageset::setDefaultResourceGroup("Imagesets");
-    CEGUI::Font::setDefaultResourceGroup("Fonts");
-    CEGUI::Scheme::setDefaultResourceGroup("Schemes");
-    CEGUI::WidgetLookManager::setDefaultResourceGroup("LookNFeel");
-    CEGUI::WindowManager::setDefaultResourceGroup("Layouts");
-    CEGUI::SchemeManager::getSingleton().create("TaharezLook.scheme");
+    new NoLogger();
 }
 
 void BaseRoot::initResourceManager()
@@ -124,6 +120,11 @@ void BaseRoot::initSceneManager()
     sceneManager->addNewScene( mainScene );
     NextScene *nextScene = new NextScene( "nextScene" );
     sceneManager->addNewScene( nextScene );
+}
+
+void BaseRoot::initPlayer()
+{
+    player = new Player();
 }
 
 void BaseRoot::renderOneFrame()

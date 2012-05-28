@@ -5,70 +5,31 @@ namespace Beliskner
 
 NextScene::NextScene( std::string _sceneName )
 {
-    playerName = "playername";
-    std::stringstream tempstream;
-    playerLife = 500;
-    playerMana = 500;
     base = BaseRoot::getSingletonPtr();
-    ceguiRenderer = base->ceguiRenderer;
-    sceneName = _sceneName;
-    sceneManager = NULL;
-    camera       = NULL;
-    sceneSwitch  = false;
+    ceguiRenderer    = base->ceguiRenderer;
+    sceneName        = _sceneName;
+    sceneManager     = NULL;
+    camera           = NULL;
+    attackPlayer     = false;
+    invertPlayerDir  = false;
+    magicPlayer      = false;
+    sceneSwitch      = false;
+    hitMonster       = false;
+    hitAni           = false;
+    playerTurns      = 0;
+    monsterTurns     = 0;
+    attackMonster    = false;
+    invertMonsterDir = false;
+    magicMonster     = false;
+    hitPlayer        = false;
+    playerAction     = false;
+    playerActionInProgress = false;
+    monsterActionInProgress = false;
 }
 
 NextScene::~NextScene()
 {
 
-}
-
-void NextScene::createScene()
-{
-    sceneSwitch = false;
-    Ogre::Entity *ent = sceneManager->createEntity( "penguin.mesh" );
-    sceneManager->getRootSceneNode()->attachObject( ent );
-
-
-
-}
-
-bool NextScene::attackButtonClicked( const CEGUI::EventArgs& )
-{
-    std::cout << "attack" << std::endl;
-    return true;
-}
-
-bool NextScene::magicButtonClicked( const CEGUI::EventArgs& )
-{
-    std::cout << "magic" << std::endl;
-    return true;
-}
-
-std::string NextScene::playerStatusString()
-{
-    std::stringstream playerStatus;
-    playerStatus << "HP " << playerLife << " MP " << playerMana;
-    return playerStatus.str();
-}
-
-void NextScene::prepareScene()
-{
-    initSceneManager();
-    initCamera();
-    initGui();
-}
-
-void NextScene::exitScene()
-{
-    ceguiRenderer->destroySystem();
-    destroyCamera();
-    destroySceneManager();
-}
-
-void NextScene::switchScene()
-{
-    if( sceneSwitch )
-        base->sceneManager->switchToScene( "mainScene" );
 }
 
 void NextScene::initSceneManager()
@@ -81,7 +42,7 @@ void NextScene::initCamera()
 {
     base->logger->logMessage( "initiating camera..." );
     camera = sceneManager->createCamera( "Camera" );
-    camera->setPosition( Ogre::Vector3( 0, 0, 50 ) );
+    camera->setPosition( Ogre::Vector3( -50, 20, 0 ) );
     camera->lookAt( Ogre::Vector3( 0, 0, 0 ) );
     camera->setNearClipDistance( 5 );
     camera->setAspectRatio( Ogre::Real( base->viewport->getActualWidth() ) / Ogre::Real( base->viewport->getActualHeight() ) );
@@ -90,7 +51,6 @@ void NextScene::initCamera()
 
 void NextScene::initGui()
 {
-    new NoLogger();
     ceguiRenderer= &CEGUI::OgreRenderer::bootstrapSystem();
     CEGUI::SchemeManager::getSingleton().create( "TaharezLook.scheme" );
     CEGUI::System::getSingleton().setDefaultFont( "DejaVuSans-10" );
@@ -126,7 +86,7 @@ void NextScene::initGui()
     myRoot->addChildWindow(magicLabel);
 
     CEGUI::DefaultWindow* displayedPlayerName = static_cast<CEGUI::DefaultWindow*>(CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticText", "playerName"));
-    displayedPlayerName->setText( playerName );
+    displayedPlayerName->setText( base->player->name );
     displayedPlayerName->setProperty("TextColours", "tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFF0000");
     displayedPlayerName->setProperty("VertFormatting", "VertCentred");
     displayedPlayerName->setProperty("HorzFormatting", "HorzCentred");
@@ -136,28 +96,21 @@ void NextScene::initGui()
     displayedPlayerName->setProperty("FrameEnabled", "false");
     myRoot->addChildWindow(displayedPlayerName);
 
-    CEGUI::DefaultWindow* displayedPlayerLife = static_cast<CEGUI::DefaultWindow*>(CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticText", "playerLife"));
-    displayedPlayerLife->setText( playerStatusString() );
-    displayedPlayerLife->setProperty("TextColours", "tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFF0000");
-    displayedPlayerLife->setProperty("VertFormatting", "VertCentred");
-    displayedPlayerLife->setProperty("HorzFormatting", "HorzCentred");
-    displayedPlayerLife->setPosition(CEGUI::UVector2( CEGUI::UDim( 0.775f, 0.0f ), CEGUI::UDim( 0.93f, 0.0f) ) );
-    displayedPlayerLife->setSize( CEGUI::UVector2( CEGUI::UDim( 0.24f, 0.0f ), CEGUI::UDim( 0.05f, 0.0f) ) );
-    displayedPlayerLife->setProperty("BackgroundEnabled", "false");
-    displayedPlayerLife->setProperty("FrameEnabled", "false");
-    myRoot->addChildWindow(displayedPlayerLife);
-/*
-    CEGUI::DefaultWindow* displayedPlayerMana = static_cast<CEGUI::DefaultWindow*>(CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticText", "playerMana"));
-    displayedPlayerMana->setText( playerMP );
-    displayedPlayerMana->setProperty("TextColours", "tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFF0000");
-    displayedPlayerMana->setProperty("VertFormatting", "VertCentred");
-    displayedPlayerMana->setProperty("HorzFormatting", "HorzCentred");
-    displayedPlayerMana->setPosition(CEGUI::UVector2( CEGUI::UDim( 0.955f, 0.0f ), CEGUI::UDim( 0.93f, 0.0f) ) );
-    displayedPlayerMana->setSize( CEGUI::UVector2( CEGUI::UDim( 0.12f, 0.0f ), CEGUI::UDim( 0.05f, 0.0f) ) );
-    displayedPlayerMana->setProperty("BackgroundEnabled", "false");
-    displayedPlayerMana->setProperty("FrameEnabled", "false");
-    myRoot->addChildWindow(displayedPlayerMana);
-*/
+    displayedPlayerStatus = static_cast<CEGUI::DefaultWindow*>(CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticText", "playerLife"));
+    displayedPlayerStatus->setText( playerStatusString() );
+    displayedPlayerStatus->setProperty("TextColours", "tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFF0000");
+    displayedPlayerStatus->setProperty("VertFormatting", "VertCentred");
+    displayedPlayerStatus->setProperty("HorzFormatting", "HorzCentred");
+    displayedPlayerStatus->setPosition(CEGUI::UVector2( CEGUI::UDim( 0.775f, 0.0f ), CEGUI::UDim( 0.93f, 0.0f) ) );
+    displayedPlayerStatus->setSize( CEGUI::UVector2( CEGUI::UDim( 0.24f, 0.0f ), CEGUI::UDim( 0.05f, 0.0f) ) );
+    displayedPlayerStatus->setProperty("BackgroundEnabled", "false");
+    displayedPlayerStatus->setProperty("FrameEnabled", "false");
+    myRoot->addChildWindow(displayedPlayerStatus);
+}
+
+void NextScene::initMonster()
+{
+    monster = new Monster( "ninja" );
 }
 
 void NextScene::destroySceneManager()
@@ -168,13 +121,6 @@ void NextScene::destroySceneManager()
 void NextScene::destroyCamera()
 {
     sceneManager->destroyCamera( camera );
-}
-
-void NextScene::updateScene()
-{
-    updateKeyboard();
-    updateMouse();
-    switchScene();
 }
 
 void NextScene::updateKeyboard()
@@ -194,6 +140,139 @@ void NextScene::updateMouse()
 {
     base->frameListener->mouse->capture();
     CEGUI::System::getSingleton().injectTimePulse( base->timer->getMilliseconds() * 0.001f );
+}
+
+void NextScene::updateAnimations()
+{
+    if( playerActionInProgress )
+    {
+        if( playerNode->getPosition().z == 23 )
+        {
+            if( hitMonster )
+            {
+                hitAni->setEnabled(true);
+                hitAni->addTime( base->timer->getMilliseconds() * 0.001f );
+                if( hitAni->hasEnded() )
+                {
+                    hitAni->setEnabled(false);
+                    hitAni->setTimePosition( 0.0f );
+                    hitMonster = false;
+                }
+                return;
+            }
+            else
+            {
+                invertPlayerDir = true;
+                playerNode->yaw( Ogre::Degree( 180 ) );
+            }
+        }
+
+        Ogre::Vector3 transDir(0, 0, 0);
+        if( invertPlayerDir )
+        {
+            transDir.z = -1;
+        }
+        else
+        {
+            transDir.z = 1;
+        }
+        if( attackPlayer )
+        {
+            playerNode->translate( transDir * 0.5f );
+            aniState->setEnabled( true );
+            aniStateTop->setEnabled( true );
+
+            if( aniState->hasEnded() )
+            {
+                aniState->setTimePosition( 0.0f );
+            }
+            if( aniStateTop->hasEnded() )
+            {
+                aniStateTop->setTimePosition( 0.0f );
+            }
+        }
+        else
+        {
+            aniState->setTimePosition( 0.0f );
+            aniState->setEnabled( false );
+            aniStateTop->setTimePosition( 0.0f );
+            aniStateTop->setEnabled( false );
+        }
+        aniState->addTime( base->timer->getMilliseconds() * 0.001f );
+        aniStateTop->addTime( base->timer->getMilliseconds() * 0.001f );
+        if( attackPlayer && playerNode->getPosition().z == -25 )
+        {
+            attackPlayer = false;
+            playerActionInProgress = false;
+            invertPlayerDir = false;
+            playerNode->yaw( Ogre::Degree( 180 ) );
+            aniState->setTimePosition( 0.0f );
+            aniStateTop->setTimePosition( 0.0f );
+        }
+        return;
+    }
+
+    if( monsterActionInProgress )
+    {
+        if( monsterNode->getPosition().z == -23 )
+        {
+            if( hitPlayer )
+            {
+                monsterAttack->setEnabled(true);
+                monsterAttack->addTime( base->timer->getMilliseconds() * 0.001f );
+                if( monsterAttack->hasEnded() )
+                {
+                    monsterAttack->setEnabled(false);
+                    monsterAttack->setTimePosition( 0.0f );
+                    hitPlayer = false;
+                    base->player->playerLife -= monster->monsterStrength;
+                }
+                return;
+            }
+            else
+            {
+                invertMonsterDir = true;
+                monsterNode->yaw( Ogre::Degree( 180 ) );
+            }
+        }
+
+        Ogre::Vector3 transDir(0, 0, 0);
+        if( invertMonsterDir )
+        {
+            transDir.z = 1;
+        }
+        else
+        {
+            transDir.z = -1;
+        }
+        if( attackMonster )
+        {
+            monsterNode->translate( transDir * 0.5f );
+            monsterState->setEnabled( true );
+
+            if( monsterState->hasEnded() )
+            {
+                monsterState->setTimePosition( 0.0f );
+            }
+        }
+        else
+        {
+            monsterState->setTimePosition( 0.0f );
+            monsterState->setEnabled( false );
+        }
+        monsterState->addTime( base->timer->getMilliseconds() * 0.001f );
+
+        if( attackMonster && monsterNode->getPosition().z == 25 )
+        {
+            attackMonster = false;
+            monsterActionInProgress = false;
+            invertMonsterDir = false;
+            monsterNode->yaw( Ogre::Degree( 180 ) );
+            monsterState->setTimePosition( 0.0f );
+        }
+        return;
+    }
+
 }
 
 bool NextScene::keyPressed( const OIS::KeyEvent& evt )
@@ -246,4 +325,160 @@ CEGUI::MouseButton NextScene::convertButton(OIS::MouseButtonID buttonID)
     }
 }
 
+bool NextScene::attackButtonClicked( const CEGUI::EventArgs& )
+{
+    attackPlayer = true;
+    hitMonster = true;
+    ++playerTurns;
+    playerActionInProgress = true;
+    return true;
+}
+
+bool NextScene::magicButtonClicked( const CEGUI::EventArgs& )
+{
+    base->player->playerMana -= 10;
+    displayedPlayerStatus->setText( playerStatusString() );
+    return true;
+}
+
+std::string NextScene::playerStatusString()
+{
+    std::stringstream playerStatus;
+    playerStatus << "HP " << base->player->playerLife << " MP " << base->player->playerMana;
+    return playerStatus.str();
+}
+void NextScene::createScene()
+{
+    sceneSwitch = false;
+
+    Ogre::Plane plane( Ogre::Vector3::UNIT_Y, -5 );
+    Ogre::MeshManager::getSingleton().createPlane( "plane",
+                                                    Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+                                                    plane,
+                                                    1500, 1500, 200, 200, true, 1, 5, 5, Ogre::Vector3::UNIT_Z
+                                                 );
+    Ogre::Entity *ground = sceneManager->createEntity( "LightPlane", "plane" );
+    sceneManager->getRootSceneNode()->attachObject( ground );
+    ground->setMaterialName( "Examples/BeachStones" );
+
+    Ogre::Light *light = sceneManager->createLight( "Light1" );
+    light->setType( Ogre::Light::LT_DIRECTIONAL );
+    light->setDirection( Ogre::Vector3( 1, -1, 0 ) );
+
+    playerEnt = sceneManager->createEntity( "Sinbad.mesh" );
+    playerNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+    playerNode->setPosition( 0, 0, -25 );
+    playerNode->attachObject( playerEnt );
+
+    aniState    = playerEnt->getAnimationState( "RunBase" );
+    aniState->setLoop( false );
+
+    aniStateTop = playerEnt->getAnimationState( "RunTop" );
+    aniStateTop->setLoop( false );
+
+    hitAni = playerEnt->getAnimationState( "DrawSwords" );
+    hitAni->setLoop( false );
+
+    monsterEnt = sceneManager->createEntity( "ninja.mesh" );
+    monsterNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+    monsterNode->setPosition( 0, -5, 25 );
+    monsterNode->attachObject( monsterEnt );
+    monsterNode->scale( 0.04f, 0.04f, 0.04f );
+
+    monsterState = monsterEnt->getAnimationState( "Walk" );
+    monsterState->setLoop( false );
+
+    monsterAttack = monsterEnt->getAnimationState( "Attack1");
+    monsterAttack->setLoop( false );
+
+    /*
+    Ogre::AnimationStateSet* set = monsterEnt->getAllAnimationStates();
+    Ogre::AnimationStateIterator iter = set->getAnimationStateIterator();
+    while( iter.hasMoreElements())
+    {
+        std::cout << iter.getNext()->getAnimationName() << std::endl;
+
+    */
+}
+
+void NextScene::prepareScene()
+{
+    initSceneManager();
+    initCamera();
+    initGui();
+    initMonster();
+}
+
+void NextScene::exitScene()
+{
+    ceguiRenderer->destroySystem();
+    destroyCamera();
+    destroySceneManager();
+    delete monster;
+    playerTurns  = 0;
+    monsterTurns = 0;
+}
+
+void NextScene::switchScene()
+{
+    if( sceneSwitch )
+        base->sceneManager->switchToScene( "mainScene" );
+}
+
+void NextScene::updateScene()
+{
+    if( !monsterActionInProgress && !playerActionInProgress )
+        updateTurn();
+    updateGui();
+    updateKeyboard();
+    updateMouse();
+    updateAnimations();
+    switchScene();
+}
+
+void NextScene::updateTurn()
+{
+    float turnRatioShould = monster->monsterSpeed / base->player->playerSpeed;
+    float turnRatioIs = ( monsterTurns + 1 ) / ( playerTurns + 1 );
+    if( playerTurns == 0 && monsterTurns == 0 )
+    {
+        srand( time( NULL ) );
+        if( rand() % 2 )
+        {
+            playerAction = true;
+        }
+
+    }
+    else
+    {
+
+        if( turnRatioIs >= turnRatioShould )
+        {
+            playerAction = true;
+        }
+        else
+        {
+            playerAction = false;
+        }
+    }
+    if( !playerAction )
+    {
+        std::cout << "monsterTrn" << std::endl;
+        ++monsterTurns;
+        monsterActionInProgress = true;
+        hitPlayer = true;
+        attackMonster = true;
+    }
+}
+
+void NextScene::updateGui()
+{
+    displayedPlayerStatus->setText( playerStatusString() );
+    if( playerAction )
+    {
+    }
+    else
+    {
+    }
+}
 }
