@@ -90,6 +90,7 @@ void NextScene::initCamera()
 
 void NextScene::initGui()
 {
+    new NoLogger();
     ceguiRenderer= &CEGUI::OgreRenderer::bootstrapSystem();
     CEGUI::SchemeManager::getSingleton().create( "TaharezLook.scheme" );
     CEGUI::System::getSingleton().setDefaultFont( "DejaVuSans-10" );
