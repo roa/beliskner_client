@@ -6,12 +6,14 @@ namespace Beliskner
 Monster::Monster( std::string _name, BaseScene *_currentScene )
 {
     base = BaseRoot::getSingletonPtr();
-    attackMonster    = false;
-    hitPlayer        = false;
-    invertMonsterDir = false;
-    magicMonster     = false;
-    monsterTurns     = 0;
-
+    attackMonster      = false;
+    hitPlayer          = false;
+    invertMonsterDir   = false;
+    magicMonster       = false;
+    monsterTurns       = 0;
+    monsterAttackCount = 0;
+    aniNum             = 0;
+    currentMonsterLife = 0;
     monsterActionInProgress = false;
     currentScene = _currentScene;
 
@@ -20,7 +22,11 @@ Monster::Monster( std::string _name, BaseScene *_currentScene )
 
     std::stringstream scriptCaller;
     scriptCaller << "scripts/" << name.c_str() << ".lua";
-    load( L, scriptCaller.str().c_str() );
+    sname = scriptCaller.str();
+    std::stringstream scriptCaller2;
+    scriptCaller2 << "scripts/" << name.c_str() << "Attack.lua";
+    aname = scriptCaller2.str();
+    load( L, sname.c_str() );
 }
 
 Monster::~Monster()
@@ -30,7 +36,7 @@ Monster::~Monster()
 
 void Monster::setUpScene()
 {
-    monsterEnt = currentScene->sceneManager->createEntity( "ninja.mesh" );
+    monsterEnt  = currentScene->sceneManager->createEntity( "ninja.mesh" );
     monsterNode = currentScene->sceneManager->getRootSceneNode()->createChildSceneNode();
     monsterNode->setPosition( 0, -5, 25 );
     monsterNode->attachObject( monsterEnt );
@@ -39,8 +45,7 @@ void Monster::setUpScene()
     monsterState = monsterEnt->getAnimationState( "Walk" );
     monsterState->setLoop( false );
 
-    monsterAttack = monsterEnt->getAnimationState( "Attack1" );
-    monsterAttack->setLoop( false );
+    initAnimations();
 }
 
 void Monster::makeAnimations()
@@ -49,14 +54,13 @@ void Monster::makeAnimations()
     {
         if( hitPlayer )
         {
-            monsterAttack->setEnabled( true );
-            monsterAttack->addTime( base->timer->getMilliseconds() * 0.001f );
-            if( monsterAttack->hasEnded() )
+            monsterAttackAnis.at( aniNum )->setEnabled( true );
+            monsterAttackAnis.at( aniNum )->addTime( base->timer->getMilliseconds() * 0.001f );
+            if( monsterAttackAnis.at( aniNum )->hasEnded() )
             {
-                monsterAttack->setEnabled( false );
-                monsterAttack->setTimePosition( 0.0f );
+                monsterAttackAnis.at( aniNum )->setEnabled( false );
+                monsterAttackAnis.at( aniNum )->setTimePosition( 0.0f );
                 hitPlayer = false;
-                base->player->playerLife -= monsterStrength;
             }
             return;
         }
@@ -117,6 +121,7 @@ void Monster::load( lua_State *L, const char* fname )
         initFailure = true;
     }
     monsterLife     = lua_tointeger( L, 1 );
+    currentMonsterLife = monsterLife;
     lua_pop( L, 1 );
 
     lua_getglobal( L, "monsterMana" );
@@ -159,7 +164,53 @@ void Monster::load( lua_State *L, const char* fname )
     {
         monsterAttacks.push_back( lua_tostring( L, -1 ));
         lua_pop( L, 1 );
+        ++monsterAttackCount;
     }
+    lua_close( L );
+}
+
+void Monster::initAnimations()
+{
+    int i = 0;
+    for( std::vector<std::string>::iterator it = monsterAttacks.begin(); it != monsterAttacks.end(); ++it)
+    {
+        std::string aniName = *it;
+        monsterAttackAnis.push_back( monsterEnt->getAnimationState( aniName ) );
+        monsterAttackAnis.at( i++ )->setLoop( false );
+    }
+}
+
+void Monster::calcAttack()
+{
+    L = luaL_newstate();
+    luaopen_math(L);
+    luaopen_os(L);
+    if( luaL_loadfile( L, aname.c_str() ) )
+    {
+        std::cerr << "Could not load " << aname << " : " << lua_tostring( L, -1 ) << std::endl;
+    }
+    luaL_openlibs( L );
+
+    lua_pushnumber( L, monsterLife );
+    lua_setglobal( L, "monsterLife" );
+    lua_pushnumber( L, currentMonsterLife );
+    lua_setglobal( L, "currentMonsterLife" );
+    lua_pushnumber( L, monsterStrength );
+    lua_setglobal( L, "monsterStrength" );
+    lua_pushnumber( L, currentMonsterMana );
+    lua_setglobal( L, "currentMonsterMana" );
+
+
+   /***************************************************
+    *   pcall: luaState, parameters, results, errfunc *
+    ***************************************************/
+    lua_pcall(L, 0, 3, 0);
+
+    aniNum = lua_tonumber( L, -3 );
+    base->player->playerLife -= lua_tonumber( L, -2 );
+    currentMonsterMana = lua_tonumber( L, -1 );
+    std::cout << "ani: " << aniNum << "dam: " << lua_tonumber( L, -2) << "mana: " << currentMonsterMana << std::endl;
+    lua_close( L );
 }
 
 }

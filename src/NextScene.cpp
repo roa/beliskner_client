@@ -200,6 +200,7 @@ bool NextScene::attackButtonClicked( const CEGUI::EventArgs& )
     base->player->hitMonster = true;
     ++base->player->playerTurns;
     base->player->playerActionInProgress = true;
+    monster->currentMonsterLife -= base->player->playerStrength;
     return true;
 }
 
@@ -304,6 +305,7 @@ void NextScene::updateTurn()
         monster->monsterActionInProgress = true;
         monster->hitPlayer = true;
         monster->attackMonster = true;
+        monster->calcAttack();
     }
 }
 

@@ -9,7 +9,7 @@ Player::Player()
     playerLife      = 500;
     playerMana      = 500;
     playerSpeed     = 10;
-    playerStrength  = 10;
+    playerStrength  = 100;
     playerEnt       = NULL;
     playerNode      = NULL;
     aniState        = NULL;

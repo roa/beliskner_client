@@ -19,10 +19,14 @@ public:
     BaseRoot* base;
 
     std::string name;
-    int         monsterLife;
-    int         monsterMana;
-    int         monsterSpeed;
-    int         monsterStrength;
+    std::string sname;
+    std::string aname;
+    int monsterLife;
+    int currentMonsterLife;
+    int monsterMana;
+    int currentMonsterMana;
+    int monsterSpeed;
+    int monsterStrength;
 
     bool attackMonster;
     bool hitPlayer;
@@ -37,20 +41,24 @@ public:
     Ogre::Entity            *monsterEnt;
     Ogre::SceneNode         *monsterNode;
     Ogre::AnimationState    *monsterState;
-    Ogre::AnimationState    *monsterAttack;
-
+    std::vector<Ogre::AnimationState*> monsterAttackAnis;
+    int aniNum;
     BaseScene *currentScene;
 
     bool initFailure;
     std::vector<std::string> monsterAttacks;
+    int monsterAttackCount;
 
     void setUpScene();
     void makeAnimations();
 
+    void calcAttack();
 private:
     lua_State *L;
 
     void load( lua_State *L, const char* fname );
+    void initAnimations();
+
 
 };
 
