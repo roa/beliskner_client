@@ -133,7 +133,7 @@ void NextScene::updateAnimations()
 {
     if( base->player->playerActionInProgress )
     {
-        base->player->makeAnimations();
+        base->player->makeFightAnimations();
         return;
     }
 

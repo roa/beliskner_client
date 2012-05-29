@@ -28,9 +28,9 @@ void SceneManager::addNewScene( BaseScene* _newScene )
 
 void SceneManager::startMainScene()
 {
+    currentScene = sceneManagerState->front();
     sceneManagerState->front()->prepareScene();
     sceneManagerState->front()->createScene();
-    currentScene = sceneManagerState->front();
 }
 
 void SceneManager::switchToScene( std::string _sceneName )

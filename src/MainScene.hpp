@@ -11,16 +11,9 @@ class MainScene : public BaseScene
 {
 private:
     BaseRoot* base;
-    Ogre::SceneNode         *playerNode;
-
-    Ogre::Entity            *playerEnt;
-    Ogre::AnimationState    *aniState;
-    Ogre::AnimationState    *aniStateTop;
 
     Ogre::Vector3           cameraPosition;
-    Ogre::Vector3           playerPosition;
 
-    bool playerWalked;
     bool sceneSwitch;
 
     void initSceneManager();

@@ -11,8 +11,6 @@ MainScene::MainScene( std::string _sceneName )
     camera       = NULL;
 
     cameraPosition = ( 0, 0, 50 );
-    playerPosition = ( 0, 0, 0 );
-    playerWalked = false;
     sceneSwitch  = false;
 }
 
@@ -39,17 +37,7 @@ void MainScene::createScene()
     light->setType( Ogre::Light::LT_DIRECTIONAL );
     light->setDirection( Ogre::Vector3( 1, -1, 0 ) );
 
-    playerEnt   = sceneManager->createEntity( "Sinbad.mesh" );
-    aniState    = playerEnt->getAnimationState( "RunBase" );
-    aniState->setLoop( false );
-
-    aniStateTop = playerEnt->getAnimationState( "RunTop" );
-    aniStateTop->setLoop( false );
-
-    playerNode = sceneManager->getRootSceneNode()->createChildSceneNode();
-    playerNode->setPosition( playerPosition );
-    playerNode->attachObject( playerEnt );
-
+    base->player->setUpScene();
     sceneManager->setShadowTechnique( Ogre::SHADOWTYPE_STENCIL_ADDITIVE );
 }
 
@@ -61,7 +49,6 @@ void MainScene::prepareScene()
 
 void MainScene::exitScene()
 {
-    playerPosition = playerNode->getPosition();
     cameraPosition = camera->getPosition();
     destroyCamera();
     destroySceneManager();
@@ -104,7 +91,8 @@ void MainScene::updateScene()
 {
     updateMouse();
     updateKeyboard();
-    updateAnimations();
+    //updateAnimations();
+    base->player->makeWalkAnimations();
     switchScene();
 }
 
@@ -153,28 +141,28 @@ void MainScene::updateKeyboard()
     {
         playerTranslate += Ogre::Vector3( 0, 0, -1 );
         playerRotation   = 180;
-        playerWalked     = true;
+        base->player->playerWalked     = true;
         up               = true;
     }
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_DOWN ) )
     {
         playerTranslate += Ogre::Vector3( 0, 0, 1 );
         playerRotation   = 0;
-        playerWalked     = true;
+        base->player->playerWalked     = true;
         down             = true;
     }
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_LEFT ) )
     {
         playerTranslate += Ogre::Vector3( -1, 0, 0 );
         playerRotation   = 270;
-        playerWalked     = true;
+        base->player->playerWalked     = true;
         left             = true;
     }
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_RIGHT ) )
     {
         playerTranslate += Ogre::Vector3( 1, 0, 0 );
         playerRotation   = 90;
-        playerWalked     = true;
+        base->player->playerWalked     = true;
         right            = true;
     }
     if( up && left )
@@ -185,9 +173,9 @@ void MainScene::updateKeyboard()
         playerRotation = 305;
     if( down && right )
         playerRotation = 45;
-    playerNode->translate( playerTranslate * 0.5f );
-    playerNode->resetOrientation();
-    playerNode->yaw( Ogre::Degree( playerRotation ) );
+    base->player->playerNode->translate( playerTranslate * 0.5f );
+    base->player->playerNode->resetOrientation();
+    base->player->playerNode->yaw( Ogre::Degree( playerRotation ) );
 }
 
 void MainScene::updateMouse()
@@ -199,34 +187,6 @@ void MainScene::updateMouse()
 
     camera->yaw( Ogre::Radian( rotX ) );
     camera->pitch( Ogre::Radian( rotY ) );
-}
-
-void MainScene::updateAnimations()
-{
-    if( playerWalked )
-    {
-        aniState->setEnabled( true );
-        aniStateTop->setEnabled( true );
-
-        if( aniState->hasEnded() )
-        {
-            aniState->setTimePosition( 0.0f );
-        }
-        if( aniStateTop->hasEnded() )
-        {
-            aniStateTop->setTimePosition( 0.0f );
-        }
-    }
-    else
-    {
-        aniState->setTimePosition( 0.0f );
-        aniState->setEnabled( false );
-        aniStateTop->setTimePosition( 0.0f );
-        aniStateTop->setEnabled( false );
-    }
-    aniState->addTime( base->timer->getMilliseconds() * 0.001f );
-    aniStateTop->addTime( base->timer->getMilliseconds() * 0.001f );
-    playerWalked = false;
 }
 
 bool MainScene::keyPressed( const OIS::KeyEvent& evt )

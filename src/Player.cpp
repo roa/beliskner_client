@@ -19,6 +19,7 @@ Player::Player()
     hitMonster      = false;
     invertPlayerDir = false;
     magicPlayer     = false;
+    playerWalked    = false;
     playerTurns     = 0;
 
     playerActionInProgress = false;
@@ -58,10 +59,11 @@ void Player::leaveScene()
     hitMonster      = false;
     invertPlayerDir = false;
     magicPlayer     = false;
+    playerWalked    = false;
     playerTurns     = 0;
 }
 
-void Player::makeAnimations()
+void Player::makeFightAnimations()
 {
     if( playerNode->getPosition().z == 23 )
     {
@@ -126,6 +128,34 @@ void Player::makeAnimations()
         aniState->setTimePosition( 0.0f );
         aniStateTop->setTimePosition( 0.0f );
     }
+}
+
+void Player::makeWalkAnimations()
+{
+    if( playerWalked )
+    {
+        aniState->setEnabled( true );
+        aniStateTop->setEnabled( true );
+
+        if( aniState->hasEnded() )
+        {
+            aniState->setTimePosition( 0.0f );
+        }
+        if( aniStateTop->hasEnded() )
+        {
+            aniStateTop->setTimePosition( 0.0f );
+        }
+    }
+    else
+    {
+        aniState->setTimePosition( 0.0f );
+        aniState->setEnabled( false );
+        aniStateTop->setTimePosition( 0.0f );
+        aniStateTop->setEnabled( false );
+    }
+    aniState->addTime( base->timer->getMilliseconds() * 0.001f );
+    aniStateTop->addTime( base->timer->getMilliseconds() * 0.001f );
+    playerWalked = false;
 }
 
 }

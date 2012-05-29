@@ -29,6 +29,8 @@ public:
     int  playerTurns;
     bool playerActionInProgress;
 
+    bool playerWalked;
+
     std::string name;
     int playerLife;
     int playerMana;
@@ -37,7 +39,8 @@ public:
 
     void setUpScene();
     void leaveScene();
-    void makeAnimations();
+    void makeFightAnimations();
+    void makeWalkAnimations();
 
 private:
 };
