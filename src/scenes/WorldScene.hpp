@@ -1,5 +1,5 @@
-#ifndef BELISKNER_MAINSCENE_HPP
-#define BELISKNER_MAINSCENE_HPP
+#ifndef BELISKNER_WORLDSCENE_HPP
+#define BELISKNER_WORLDSCENE_HPP
 
 #include "BaseScene.hpp"
 #include "BaseRoot.hpp"
@@ -7,7 +7,7 @@
 namespace Beliskner
 {
 
-class MainScene : public BaseScene
+class WorldScene : public BaseScene
 {
 private:
     BaseRoot* base;
@@ -34,8 +34,8 @@ private:
     bool mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
 
 public:
-    MainScene( std::string _sceneName );
-    ~MainScene();
+    WorldScene( std::string _sceneName );
+    ~WorldScene();
 
     void createScene();
     void prepareScene();

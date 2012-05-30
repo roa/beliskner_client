@@ -26,7 +26,7 @@ void SceneManager::addNewScene( BaseScene* _newScene )
     sceneManagerState->push_back( _newScene );
 }
 
-void SceneManager::startMainScene()
+void SceneManager::startWorldScene()
 {
     currentScene = sceneManagerState->front();
     sceneManagerState->front()->prepareScene();

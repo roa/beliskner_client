@@ -22,7 +22,7 @@ void DemoApp::initDemoApp()
 
 void DemoApp::run()
 {
-    base->sceneManager->startMainScene();
+    base->sceneManager->startWorldScene();
     while( base->running() )
     {
         base->renderOneFrame();

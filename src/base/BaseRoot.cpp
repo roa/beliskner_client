@@ -116,10 +116,10 @@ void BaseRoot::initFrameListener()
 void BaseRoot::initSceneManager()
 {
     sceneManager = new SceneManager();
-    MainScene *mainScene = new MainScene( "mainScene" );
-    sceneManager->addNewScene( mainScene );
-    NextScene *nextScene = new NextScene( "nextScene" );
-    sceneManager->addNewScene( nextScene );
+    WorldScene *worldScene = new WorldScene( "WorldScene" );
+    sceneManager->addNewScene( worldScene );
+    FightScene *fightScene = new FightScene( "FightScene" );
+    sceneManager->addNewScene( fightScene );
 }
 
 void BaseRoot::initPlayer()

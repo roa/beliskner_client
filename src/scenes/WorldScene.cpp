@@ -1,9 +1,9 @@
-#include "MainScene.hpp"
+#include "WorldScene.hpp"
 
 namespace Beliskner
 {
 
-MainScene::MainScene( std::string _sceneName )
+WorldScene::WorldScene( std::string _sceneName )
 {
     sceneName = _sceneName;
     base = BaseRoot::getSingletonPtr();
@@ -14,12 +14,12 @@ MainScene::MainScene( std::string _sceneName )
     sceneSwitch  = false;
 }
 
-MainScene::~MainScene()
+WorldScene::~WorldScene()
 {
 
 }
 
-void MainScene::createScene()
+void WorldScene::createScene()
 {
     sceneSwitch = false;
 
@@ -45,32 +45,32 @@ void MainScene::createScene()
     cube->setMaterialName( "Examples/BeachStones" );
 }
 
-void MainScene::prepareScene()
+void WorldScene::prepareScene()
 {
     initSceneManager();
     initCamera();
 }
 
-void MainScene::exitScene()
+void WorldScene::exitScene()
 {
     cameraPosition = camera->getPosition();
     destroyCamera();
     destroySceneManager();
 }
 
-void MainScene::switchScene()
+void WorldScene::switchScene()
 {
     if( sceneSwitch )
-        base->sceneManager->switchToScene( "nextScene" );
+        base->sceneManager->switchToScene( "FightScene" );
 }
 
-void MainScene::initSceneManager()
+void WorldScene::initSceneManager()
 {
-    base->logger->logMessage( "initiating scenemanager in MainScene..." );
+    base->logger->logMessage( "initiating scenemanager in WorldScene..." );
     sceneManager = base->root->createSceneManager( Ogre::ST_GENERIC );
 }
 
-void MainScene::initCamera()
+void WorldScene::initCamera()
 {
     base->logger->logMessage( "initiating camera..." );
     camera = sceneManager->createCamera( "Camera" );
@@ -81,17 +81,17 @@ void MainScene::initCamera()
     base->viewport->setCamera( camera );
 }
 
-void MainScene::destroySceneManager()
+void WorldScene::destroySceneManager()
 {
     base->root->destroySceneManager( sceneManager );
 }
 
-void MainScene::destroyCamera()
+void WorldScene::destroyCamera()
 {
     sceneManager->destroyCamera( camera );
 }
 
-void MainScene::updateScene()
+void WorldScene::updateScene()
 {
     updateMouse();
     updateKeyboard();
@@ -100,7 +100,7 @@ void MainScene::updateScene()
     switchScene();
 }
 
-void MainScene::updateKeyboard()
+void WorldScene::updateKeyboard()
 {
     base->frameListener->keyboard->capture();
 
@@ -182,7 +182,7 @@ void MainScene::updateKeyboard()
     base->player->playerNode->yaw( Ogre::Degree( playerRotation ) );
 }
 
-void MainScene::updateMouse()
+void WorldScene::updateMouse()
 {
     base->frameListener->mouse->capture();
 
@@ -193,27 +193,27 @@ void MainScene::updateMouse()
     camera->pitch( Ogre::Radian( rotY ) );
 }
 
-bool MainScene::keyPressed( const OIS::KeyEvent& evt )
+bool WorldScene::keyPressed( const OIS::KeyEvent& evt )
 {
     return true;
 }
 
-bool MainScene::keyReleased( const OIS::KeyEvent& evt )
+bool WorldScene::keyReleased( const OIS::KeyEvent& evt )
 {
     return true;
 }
 
-bool MainScene::mouseMoved( const OIS::MouseEvent& evt )
+bool WorldScene::mouseMoved( const OIS::MouseEvent& evt )
 {
     return true;
 }
 
-bool MainScene::mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
+bool WorldScene::mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
 {
     return true;
 }
 
-bool MainScene::mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
+bool WorldScene::mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
 {
     return true;
 }

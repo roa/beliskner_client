@@ -1,5 +1,5 @@
-#ifndef BELISKNER_NEXTSCENE_HPP
-#define BELISKNER_NEXTSCENE_HPP
+#ifndef BELISKNER_FIGHTSCENE_HPP
+#define BELISKNER_FIGHTSCENE_HPP
 
 #include "BaseScene.hpp"
 #include "BaseRoot.hpp"
@@ -13,7 +13,7 @@ namespace Beliskner
 
 class Monster;
 
-class NextScene : public BaseScene
+class FightScene : public BaseScene
 {
 private:
     BaseRoot                *base;
@@ -54,8 +54,8 @@ private:
     std::string playerStatusString();
 
 public:
-    NextScene( std::string _sceneName );
-    ~NextScene();
+    FightScene( std::string _sceneName );
+    ~FightScene();
 
     void createScene();
     void prepareScene();

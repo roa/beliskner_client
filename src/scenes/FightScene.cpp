@@ -1,9 +1,9 @@
-#include "NextScene.hpp"
+#include "FightScene.hpp"
 
 namespace Beliskner
 {
 
-NextScene::NextScene( std::string _sceneName )
+FightScene::FightScene( std::string _sceneName )
 {
     base = BaseRoot::getSingletonPtr();
     ceguiRenderer    = base->ceguiRenderer;
@@ -14,18 +14,18 @@ NextScene::NextScene( std::string _sceneName )
     playerAction     = false;
 }
 
-NextScene::~NextScene()
+FightScene::~FightScene()
 {
 
 }
 
-void NextScene::initSceneManager()
+void FightScene::initSceneManager()
 {
-    base->logger->logMessage( "initiating scenemanager in NextScene..." );
+    base->logger->logMessage( "initiating scenemanager in FightScene..." );
     sceneManager = base->root->createSceneManager( Ogre::ST_GENERIC );
 }
 
-void NextScene::initCamera()
+void FightScene::initCamera()
 {
     base->logger->logMessage( "initiating camera..." );
     camera = sceneManager->createCamera( "Camera" );
@@ -36,7 +36,7 @@ void NextScene::initCamera()
     base->viewport->setCamera( camera );
 }
 
-void NextScene::initGui()
+void FightScene::initGui()
 {
     ceguiRenderer= &CEGUI::OgreRenderer::bootstrapSystem();
     CEGUI::SchemeManager::getSingleton().create( "TaharezLook.scheme" );
@@ -61,7 +61,7 @@ void NextScene::initGui()
     CEGUI::PushButton* attackLabel = static_cast<CEGUI::PushButton*>( CEGUI::WindowManager::getSingleton().createWindow( "TaharezLook/Button", "attackLabel") );
     attackLabel->setSize( CEGUI::UVector2( CEGUI::UDim( 0.12f, 0.0f ), CEGUI::UDim( 0.05f, 0.0f ) ) );
     attackLabel->setPosition( CEGUI::UVector2( CEGUI::UDim( 0.012f, 0.0f ), CEGUI::UDim( 0.86f, 0.0f ) ) );
-    attackLabel->subscribeEvent( CEGUI::PushButton::EventClicked,CEGUI::Event::Subscriber( &NextScene::attackButtonClicked,this ) );
+    attackLabel->subscribeEvent( CEGUI::PushButton::EventClicked,CEGUI::Event::Subscriber( &FightScene::attackButtonClicked,this ) );
     attackLabel->setText( "Attack" );
     myRoot->addChildWindow( attackLabel );
 
@@ -69,7 +69,7 @@ void NextScene::initGui()
     magicLabel->setText( "Magic" );
     magicLabel->setSize( CEGUI::UVector2( CEGUI::UDim( 0.12f, 0.0f ), CEGUI::UDim( 0.05f, 0.0f ) ) );
     magicLabel->setPosition( CEGUI::UVector2( CEGUI::UDim( 0.012f, 0.0f ), CEGUI::UDim( 0.92f, 0.0f ) ) );
-    magicLabel->subscribeEvent( CEGUI::PushButton::EventClicked,CEGUI::Event::Subscriber( &NextScene::magicButtonClicked,this ) );
+    magicLabel->subscribeEvent( CEGUI::PushButton::EventClicked,CEGUI::Event::Subscriber( &FightScene::magicButtonClicked,this ) );
     myRoot->addChildWindow( magicLabel );
 
     CEGUI::DefaultWindow* displayedPlayerName = static_cast<CEGUI::DefaultWindow*>( CEGUI::WindowManager::getSingleton().createWindow( "TaharezLook/StaticText", "playerName" ) );
@@ -95,22 +95,22 @@ void NextScene::initGui()
     myRoot->addChildWindow( displayedPlayerStatus );
 }
 
-void NextScene::initMonster()
+void FightScene::initMonster()
 {
     monster = new Monster( "ninja", this );
 }
 
-void NextScene::destroySceneManager()
+void FightScene::destroySceneManager()
 {
     base->root->destroySceneManager( sceneManager );
 }
 
-void NextScene::destroyCamera()
+void FightScene::destroyCamera()
 {
     sceneManager->destroyCamera( camera );
 }
 
-void NextScene::updateKeyboard()
+void FightScene::updateKeyboard()
 {
     base->frameListener->keyboard->capture();
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_ESCAPE ) )
@@ -123,13 +123,13 @@ void NextScene::updateKeyboard()
     }
 }
 
-void NextScene::updateMouse()
+void FightScene::updateMouse()
 {
     base->frameListener->mouse->capture();
     CEGUI::System::getSingleton().injectTimePulse( base->timer->getMilliseconds() * 0.001f );
 }
 
-void NextScene::updateAnimations()
+void FightScene::updateAnimations()
 {
     if( base->player->playerActionInProgress )
     {
@@ -144,17 +144,17 @@ void NextScene::updateAnimations()
     }
 }
 
-bool NextScene::keyPressed( const OIS::KeyEvent& evt )
+bool FightScene::keyPressed( const OIS::KeyEvent& evt )
 {
     return true;
 }
 
-bool NextScene::keyReleased( const OIS::KeyEvent& evt )
+bool FightScene::keyReleased( const OIS::KeyEvent& evt )
 {
     return true;
 }
 
-bool NextScene::mouseMoved( const OIS::MouseEvent& evt )
+bool FightScene::mouseMoved( const OIS::MouseEvent& evt )
 {
     CEGUI::System &sys = CEGUI::System::getSingleton();
     sys.injectMouseMove( evt.state.X.rel, evt.state.Y.rel );
@@ -164,19 +164,19 @@ bool NextScene::mouseMoved( const OIS::MouseEvent& evt )
     return true;
 }
 
-bool NextScene::mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
+bool FightScene::mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
 {
     CEGUI::System::getSingleton().injectMouseButtonDown( convertButton( id ) );
     return true;
 }
 
-bool NextScene::mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
+bool FightScene::mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
 {
     CEGUI::System::getSingleton().injectMouseButtonUp( convertButton( id ) );
     return true;
 }
 
-CEGUI::MouseButton NextScene::convertButton( OIS::MouseButtonID buttonID )
+CEGUI::MouseButton FightScene::convertButton( OIS::MouseButtonID buttonID )
 {
     switch ( buttonID )
     {
@@ -194,7 +194,7 @@ CEGUI::MouseButton NextScene::convertButton( OIS::MouseButtonID buttonID )
     }
 }
 
-bool NextScene::attackButtonClicked( const CEGUI::EventArgs& )
+bool FightScene::attackButtonClicked( const CEGUI::EventArgs& )
 {
     base->player->attackPlayer = true;
     base->player->hitMonster = true;
@@ -204,20 +204,20 @@ bool NextScene::attackButtonClicked( const CEGUI::EventArgs& )
     return true;
 }
 
-bool NextScene::magicButtonClicked( const CEGUI::EventArgs& )
+bool FightScene::magicButtonClicked( const CEGUI::EventArgs& )
 {
     base->player->playerMana -= 10;
     displayedPlayerStatus->setText( playerStatusString() );
     return true;
 }
 
-std::string NextScene::playerStatusString()
+std::string FightScene::playerStatusString()
 {
     std::stringstream playerStatus;
     playerStatus << "HP " << base->player->playerLife << " MP " << base->player->playerMana;
     return playerStatus.str();
 }
-void NextScene::createScene()
+void FightScene::createScene()
 {
     sceneSwitch = false;
 
@@ -240,7 +240,7 @@ void NextScene::createScene()
 
 }
 
-void NextScene::prepareScene()
+void FightScene::prepareScene()
 {
     initSceneManager();
     initCamera();
@@ -248,7 +248,7 @@ void NextScene::prepareScene()
     initMonster();
 }
 
-void NextScene::exitScene()
+void FightScene::exitScene()
 {
     ceguiRenderer->destroySystem();
     destroyCamera();
@@ -258,13 +258,13 @@ void NextScene::exitScene()
     base->player->playerTurns  = 0;
 }
 
-void NextScene::switchScene()
+void FightScene::switchScene()
 {
     if( sceneSwitch )
         base->sceneManager->switchToScene( "mainScene" );
 }
 
-void NextScene::updateScene()
+void FightScene::updateScene()
 {
     if( !monster->monsterActionInProgress && !base->player->playerActionInProgress )
         updateTurn();
@@ -275,7 +275,7 @@ void NextScene::updateScene()
     switchScene();
 }
 
-void NextScene::updateTurn()
+void FightScene::updateTurn()
 {
     float turnRatioShould = monster->monsterSpeed / base->player->playerSpeed;
     float turnRatioIs = ( monster->monsterTurns + 1 ) / ( base->player->playerTurns + 1 );
@@ -309,7 +309,7 @@ void NextScene::updateTurn()
     }
 }
 
-void NextScene::updateGui()
+void FightScene::updateGui()
 {
     displayedPlayerStatus->setText( playerStatusString() );
     if( playerAction )
