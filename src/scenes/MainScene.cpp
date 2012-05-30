@@ -39,6 +39,10 @@ void MainScene::createScene()
 
     base->player->setUpScene();
     sceneManager->setShadowTechnique( Ogre::SHADOWTYPE_STENCIL_ADDITIVE );
+
+    Ogre::Entity *cube = sceneManager->createEntity( "Cube.mesh" );
+    sceneManager->getRootSceneNode()->attachObject( cube );
+    cube->setMaterialName( "Examples/BeachStones" );
 }
 
 void MainScene::prepareScene()
