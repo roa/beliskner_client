@@ -19,6 +19,10 @@ void SceneManager::initSceneManager()
 {
     base = BaseRoot::getSingletonPtr();
     sceneManagerState = new std::vector<BaseScene*>;
+    WorldScene *worldScene = new WorldScene( "WorldScene" );
+    addNewScene( worldScene );
+    FightScene *fightScene = new FightScene( "FightScene" );
+    addNewScene( fightScene );
 }
 
 void SceneManager::addNewScene( BaseScene* _newScene )

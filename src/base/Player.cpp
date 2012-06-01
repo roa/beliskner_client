@@ -126,7 +126,9 @@ void Player::makeFightAnimations()
         invertPlayerDir = false;
         playerNode->yaw( Ogre::Degree( 180 ) );
         aniState->setTimePosition( 0.0f );
+        aniState->setEnabled( false );
         aniStateTop->setTimePosition( 0.0f );
+        aniStateTop->setEnabled( false );
     }
 }
 

@@ -12,6 +12,8 @@ WorldScene::WorldScene( std::string _sceneName )
 
     cameraPosition = ( 0, 0, 50 );
     sceneSwitch  = false;
+    steps        = 0;
+    posChange    = 0;
 }
 
 WorldScene::~WorldScene()
@@ -58,10 +60,10 @@ void WorldScene::exitScene()
     destroySceneManager();
 }
 
-void WorldScene::switchScene()
+void WorldScene::switchScene( std::string sceneName )
 {
     if( sceneSwitch )
-        base->sceneManager->switchToScene( "FightScene" );
+        base->sceneManager->switchToScene( sceneName );
 }
 
 void WorldScene::initSceneManager()
@@ -91,13 +93,28 @@ void WorldScene::destroyCamera()
     sceneManager->destroyCamera( camera );
 }
 
+void WorldScene::updateSteps()
+{
+    Ogre::Vector3 nullVec( 0, 0, 0 );
+    if( ( int )base->player->playerNode->getPosition().distance( nullVec ) != posChange )
+    {
+        posChange = base->player->playerNode->getPosition().distance( nullVec );
+        ++steps;
+    }
+    if( steps == 50 )
+    {
+        sceneSwitch = true;
+        steps = 0;
+    }
+}
+
 void WorldScene::updateScene()
 {
     updateMouse();
     updateKeyboard();
-    //updateAnimations();
     base->player->makeWalkAnimations();
-    switchScene();
+    updateSteps();
+    switchScene( "FightScene" );
 }
 
 void WorldScene::updateKeyboard()

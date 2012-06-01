@@ -17,7 +17,9 @@ class FightScene : public BaseScene
 {
 private:
     BaseRoot                *base;
-    Monster                 *monster;
+    std::vector<Monster*>   *monsterVector;
+    int monsterNum;
+    //Monster                 *monster;
 
     bool playerAction;
 

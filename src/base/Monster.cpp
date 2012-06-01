@@ -3,7 +3,7 @@
 namespace Beliskner
 {
 
-Monster::Monster( std::string _name, BaseScene *_currentScene )
+Monster::Monster( std::string _name, BaseScene *_currentScene, int _xCoord )
 {
     base = BaseRoot::getSingletonPtr();
     attackMonster      = false;
@@ -14,8 +14,10 @@ Monster::Monster( std::string _name, BaseScene *_currentScene )
     monsterAttackCount = 0;
     aniNum             = 0;
     currentMonsterLife = 0;
+    currentMonsterMana = 0;
     monsterActionInProgress = false;
     currentScene = _currentScene;
+    xCoord       = _xCoord;
 
     name         = _name;
     L            = luaL_newstate();
@@ -38,7 +40,7 @@ void Monster::setUpScene()
 {
     monsterEnt  = currentScene->sceneManager->createEntity( "ninja.mesh" );
     monsterNode = currentScene->sceneManager->getRootSceneNode()->createChildSceneNode();
-    monsterNode->setPosition( 0, -5, 25 );
+    monsterNode->setPosition( 5 * xCoord, -5, 25 );
     monsterNode->attachObject( monsterEnt );
     monsterNode->scale( 0.04f, 0.04f, 0.04f );
 
@@ -61,6 +63,7 @@ void Monster::makeAnimations()
                 monsterAttackAnis.at( aniNum )->setEnabled( false );
                 monsterAttackAnis.at( aniNum )->setTimePosition( 0.0f );
                 hitPlayer = false;
+                base->player->playerLife -= damage;
             }
             return;
         }
@@ -104,6 +107,8 @@ void Monster::makeAnimations()
         invertMonsterDir = false;
         monsterNode->yaw( Ogre::Degree( 180 ) );
         monsterState->setTimePosition( 0.0f );
+        monsterState->setEnabled( false );
+        return;
     }
 }
 
@@ -131,6 +136,7 @@ void Monster::load( lua_State *L, const char* fname )
         initFailure = true;
     }
     monsterMana     = lua_tointeger( L, 1 );
+    currentMonsterMana = monsterMana;
     lua_pop( L, 1 );
 
     lua_getglobal( L, "monsterSpeed");
@@ -207,9 +213,9 @@ void Monster::calcAttack()
     lua_pcall(L, 0, 3, 0);
 
     aniNum = lua_tonumber( L, -3 );
-    base->player->playerLife -= lua_tonumber( L, -2 );
+    damage = lua_tonumber( L, -2 );
     currentMonsterMana = lua_tonumber( L, -1 );
-    std::cout << "ani: " << aniNum << "dam: " << lua_tonumber( L, -2) << "mana: " << currentMonsterMana << std::endl;
+    std::cout << " ani: " << aniNum << " dam: " << lua_tonumber( L, -2) << " mana: " << currentMonsterMana << " monsternum: "<< xCoord <<std::endl;
     lua_close( L );
 }
 

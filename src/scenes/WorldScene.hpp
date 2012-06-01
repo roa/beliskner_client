@@ -6,13 +6,16 @@
 
 namespace Beliskner
 {
+class BaseRoot;
 
 class WorldScene : public BaseScene
 {
 private:
-    BaseRoot* base;
+    BaseRoot*       base;
 
-    Ogre::Vector3           cameraPosition;
+    Ogre::Vector3   cameraPosition;
+    int posChange;
+    int steps;
 
     bool sceneSwitch;
 
@@ -40,8 +43,8 @@ public:
     void createScene();
     void prepareScene();
     void exitScene();
-    void switchScene();
-
+    void switchScene( std::string sceneName );
+    void updateSteps();
     void updateScene();
 };
 

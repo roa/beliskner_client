@@ -12,11 +12,12 @@ FightScene::FightScene( std::string _sceneName )
     camera           = NULL;
     sceneSwitch      = false;
     playerAction     = false;
+    monsterVector    = new std::vector<Monster*>;
 }
 
 FightScene::~FightScene()
 {
-
+    delete monsterVector;
 }
 
 void FightScene::initSceneManager()
@@ -97,7 +98,19 @@ void FightScene::initGui()
 
 void FightScene::initMonster()
 {
-    monster = new Monster( "ninja", this );
+    //monster = new Monster( "ninja", this );
+    srand( time( NULL ) );
+    monsterNum = rand() % 6;
+    if( monsterNum == 0 )
+    {
+        monsterNum = 1;
+    }
+
+    for( int i = 0; i < monsterNum; ++i )
+    {
+        Monster *tempMonster = new Monster( "ninja", this, i );
+        monsterVector->push_back( tempMonster );
+    }
 }
 
 void FightScene::destroySceneManager()
@@ -137,10 +150,13 @@ void FightScene::updateAnimations()
         return;
     }
 
-    if( monster->monsterActionInProgress )
+    for(std::vector<Monster*>::iterator it = monsterVector->begin(); it != monsterVector->end(); ++it)
     {
-        monster->makeAnimations();
-        return;
+        Monster* monster = *it;
+        if( monster->monsterActionInProgress )
+        {
+            monster->makeAnimations();
+        }
     }
 }
 
@@ -180,17 +196,17 @@ CEGUI::MouseButton FightScene::convertButton( OIS::MouseButtonID buttonID )
 {
     switch ( buttonID )
     {
-    case OIS::MB_Left:
-        return CEGUI::LeftButton;
+        case OIS::MB_Left:
+            return CEGUI::LeftButton;
 
-    case OIS::MB_Right:
-        return CEGUI::RightButton;
+        case OIS::MB_Right:
+            return CEGUI::RightButton;
 
-    case OIS::MB_Middle:
-        return CEGUI::MiddleButton;
+        case OIS::MB_Middle:
+            return CEGUI::MiddleButton;
 
-    default:
-        return CEGUI::LeftButton;
+        default:
+            return CEGUI::LeftButton;
     }
 }
 
@@ -200,7 +216,12 @@ bool FightScene::attackButtonClicked( const CEGUI::EventArgs& )
     base->player->hitMonster = true;
     ++base->player->playerTurns;
     base->player->playerActionInProgress = true;
-    monster->currentMonsterLife -= base->player->playerStrength;
+    //monster->currentMonsterLife -= base->player->playerStrength;
+    for(std::vector<Monster*>::iterator it = monsterVector->begin(); it != monsterVector->end(); ++it)
+    {
+        Monster* monster = *it;
+        monster->currentMonsterLife -= base->player->playerStrength;
+    }
     return true;
 }
 
@@ -236,8 +257,13 @@ void FightScene::createScene()
     light->setDirection( Ogre::Vector3( 1, -1, 0 ) );
 
     base->player->setUpScene();
-    monster->setUpScene();
-
+    for(std::vector<Monster*>::iterator it = monsterVector->begin(); it != monsterVector->end(); ++it)
+    {
+        Monster* monster = *it;
+        monster->setUpScene();
+    }
+    //monster->setUpScene();
+    sceneManager->setShadowTechnique( Ogre::SHADOWTYPE_STENCIL_ADDITIVE );
 }
 
 void FightScene::prepareScene()
@@ -253,7 +279,20 @@ void FightScene::exitScene()
     ceguiRenderer->destroySystem();
     destroyCamera();
     destroySceneManager();
-    delete monster;
+    for(std::vector<Monster*>::iterator it = monsterVector->begin(); it != monsterVector->end(); ++it)
+    {
+        Monster* monster = *it;
+        delete monster;
+    }
+    /*
+    int vectorSize = monsterVector.size();
+
+    for( int i = 0; i < vectorSize; ++i )
+    {
+        monsterVector->pop_back();
+    }
+    */
+    monsterVector->erase( monsterVector->begin(), monsterVector->end() );
     base->player->leaveScene();
     base->player->playerTurns  = 0;
 }
@@ -261,13 +300,25 @@ void FightScene::exitScene()
 void FightScene::switchScene()
 {
     if( sceneSwitch )
-        base->sceneManager->switchToScene( "mainScene" );
+        base->sceneManager->switchToScene( "WorldScene" );
 }
 
 void FightScene::updateScene()
 {
-    if( !monster->monsterActionInProgress && !base->player->playerActionInProgress )
+    bool monsterAction = false;
+    for(std::vector<Monster*>::iterator it = monsterVector->begin(); it != monsterVector->end(); ++it)
+    {
+        Monster* monster = *it;
+        if( monster->monsterActionInProgress )
+        {
+            monsterAction = true;
+            break;
+        }
+    }
+    if( !monsterAction && !base->player->playerActionInProgress )
+    {
         updateTurn();
+    }
     updateGui();
     updateKeyboard();
     updateMouse();
@@ -277,35 +328,42 @@ void FightScene::updateScene()
 
 void FightScene::updateTurn()
 {
-    float turnRatioShould = monster->monsterSpeed / base->player->playerSpeed;
-    float turnRatioIs = ( monster->monsterTurns + 1 ) / ( base->player->playerTurns + 1 );
-    if( base->player->playerTurns == 0 && monster->monsterTurns == 0 )
+    for(std::vector<Monster*>::iterator it = monsterVector->begin(); it != monsterVector->end(); ++it)
     {
-        srand( time( NULL ) );
-        if( rand() % 2 )
+        Monster* monster = *it;
+
+        float turnRatioShould = monster->monsterSpeed / base->player->playerSpeed;
+        float turnRatioIs = ( monster->monsterTurns + 1 ) / ( base->player->playerTurns + 1 );
+        if( base->player->playerTurns == 0 && monster->monsterTurns == 0 )
         {
-            playerAction = true;
-        }
-    }
-    else
-    {
-        if( turnRatioIs >= turnRatioShould )
-        {
-            playerAction = true;
+            srand( time( NULL ) );
+            if( rand() % 2 )
+            {
+                playerAction = true;
+            }
         }
         else
         {
-            playerAction = false;
+            if( turnRatioIs >= turnRatioShould )
+            {
+                playerAction = true;
+            }
+            else
+            {
+                playerAction = false;
+            }
         }
-    }
-    if( !playerAction )
-    {
-        std::cout << "monsterTrn" << std::endl;
-        ++monster->monsterTurns;
-        monster->monsterActionInProgress = true;
-        monster->hitPlayer = true;
-        monster->attackMonster = true;
-        monster->calcAttack();
+        if( !playerAction )
+        {
+            std::cout << "monsterTrn" << std::endl;
+            ++monster->monsterTurns;
+            monster->monsterActionInProgress = true;
+            monster->hitPlayer = true;
+            monster->attackMonster = true;
+            monster->calcAttack();
+            break;
+        }
+
     }
 }
 

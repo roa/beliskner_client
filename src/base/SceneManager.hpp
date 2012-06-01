@@ -7,6 +7,8 @@
 
 #include "BaseScene.hpp"
 #include "BaseRoot.hpp"
+#include "WorldScene.hpp"
+#include "FightScene.hpp"
 
 namespace Beliskner
 {

@@ -13,7 +13,7 @@ namespace Beliskner
 class Monster
 {
 public:
-    Monster( std::string _name, BaseScene *_currentScene );
+    Monster( std::string _name, BaseScene *_currentScene, int _xCoord );
     ~Monster();
 
     BaseRoot* base;
@@ -37,6 +37,9 @@ public:
     bool playerAction;
     bool playerActionInProgress;
     bool monsterActionInProgress;
+
+    int xCoord;
+    int damage;
 
     Ogre::Entity            *monsterEnt;
     Ogre::SceneNode         *monsterNode;

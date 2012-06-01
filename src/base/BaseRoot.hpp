@@ -6,8 +6,6 @@
 #include "FrameListener.hpp"
 #include "SceneManager.hpp"
 #include "BaseScene.hpp"
-#include "WorldScene.hpp"
-#include "FightScene.hpp"
 #include "NoLogger.hpp"
 #include "Player.hpp"
 
