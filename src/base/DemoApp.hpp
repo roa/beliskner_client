@@ -12,6 +12,7 @@ namespace Beliskner
 
 class DemoApp
 {
+
 private:
     BaseRoot* base;
     Connection* conn;
@@ -25,6 +26,7 @@ public:
     ~DemoApp();
 
     void run();
+
 };
 
 }
