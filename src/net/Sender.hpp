@@ -47,6 +47,7 @@ private:
 
     void *get_in_addr( struct sockaddr *sa );
     void connectToServer();
+    void recvFromServer();
     void sendTest();
     void blockWhilePaused();
 

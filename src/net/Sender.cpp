@@ -51,7 +51,8 @@ Sender::~Sender()
 
 void Sender::startNet()
 {
-    boost::thread Net( boost::bind( &Sender::connectToServer, this ) );
+    boost::thread sender( boost::bind( &Sender::connectToServer, this ) );
+    boost::thread receiver( boost::bind( &Sender::recvFromServer, this ) );
 }
 
 void Sender::setPaused( bool newState )
@@ -84,6 +85,16 @@ void Sender::connectToServer()
     {
         blockWhilePaused();
         sendTest();
+    }
+}
+
+void Sender::recvFromServer()
+{
+    while( true )
+    {
+        message msg;
+        recv( sockfd, &msg, sizeof( message ), 0 );
+        std::cout << msg.status << std::endl;
     }
 }
 
