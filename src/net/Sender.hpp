@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <vector>
 #include <netdb.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -28,6 +29,7 @@ public:
     ~Sender();
     void startNet();
     void setPaused( bool newState );
+    void setMessageQueue( message newMsg );
 
 private:
     int sockfd, numbytes;
@@ -41,7 +43,9 @@ private:
 
     BaseRoot *base;
 
-    void *get_in_addr(struct sockaddr *sa);
+    std::vector<message> messageQueue;
+
+    void *get_in_addr( struct sockaddr *sa );
     void connectToServer();
     void sendTest();
     void blockWhilePaused();

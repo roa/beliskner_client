@@ -203,6 +203,43 @@ void WorldScene::updateKeyboard()
         */
     if( base->frameListener->keyboard->isKeyDown( OIS::KC_F ) )
     {
+        message *test = new message;
+        test->status = ID_REQUEST;
+        test->info[0] = 1;
+        test->info[1] = 2;
+        test->info[2] = 3;
+        base->conn->setMessageQueue( *test );
+        //send( sockfd, ( void * ) test, sizeof( message ), 0 );
+
+        test->status = POSITION_UPDATE;
+        test->info[0] = 1;
+        test->info[1] = 2;
+        test->info[2] = 3;
+        base->conn->setMessageQueue( *test );
+        //send( sockfd, ( void * ) test, sizeof( message ), 0 );
+
+        test->status = MOVED;
+        test->info[0] = 1;
+        test->info[1] = 2;
+        test->info[2] = 3;
+        base->conn->setMessageQueue( *test );
+        //send( sockfd, ( void * ) test, sizeof( message ), 0 );
+
+        test->status = STOPPED;
+        test->info[0] = 1;
+        test->info[1] = 2;
+        test->info[2] = 3;
+        base->conn->setMessageQueue( *test );
+        //send( sockfd, ( void * ) test, sizeof( message ), 0 );
+
+        test->status = 1;
+        test->info[0] = 1;
+        test->info[1] = 2;
+        test->info[2] = 3;
+        base->conn->setMessageQueue( *test );
+        //send( sockfd, ( void * ) test, sizeof( message ), 0 );
+
+        delete test;
         base->conn->setPaused( false );
     }
 }

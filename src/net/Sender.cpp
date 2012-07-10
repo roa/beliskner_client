@@ -49,53 +49,6 @@ Sender::~Sender()
 
 }
 
-void *Sender::get_in_addr( struct sockaddr *sa )
-{
-    if ( sa->sa_family == AF_INET )
-    {
-        return &( ( ( struct sockaddr_in* )sa )->sin_addr );
-    }
-    return &( ( ( struct sockaddr_in6* )sa )->sin6_addr );
-}
-
-void Sender::sendTest()
-{
-    message *test = new message;
-    test->status = ID_REQUEST;
-    test->info[0] = 1;
-    test->info[1] = 2;
-    test->info[2] = 3;
-    send(sockfd, ( void * ) test,sizeof(message), 0);
-
-    test->status = POSITION_UPDATE;
-    test->info[0] = 1;
-    test->info[1] = 2;
-    test->info[2] = 3;
-    send(sockfd, ( void * ) test,sizeof(message), 0);
-
-    test->status = MOVED;
-    test->info[0] = 1;
-    test->info[1] = 2;
-    test->info[2] = 3;
-    send(sockfd, ( void * ) test,sizeof(message), 0);
-
-    test->status = STOPPED;
-    test->info[0] = 1;
-    test->info[1] = 2;
-    test->info[2] = 3;
-    send(sockfd, ( void * ) test,sizeof(message), 0);
-
-    test->status = 1;
-    test->info[0] = 1;
-    test->info[1] = 2;
-    test->info[2] = 3;
-    send(sockfd, ( void * ) test,sizeof(message), 0);
-
-    delete test;
-
-    pause = true;
-}
-
 void Sender::startNet()
 {
     boost::thread Net( boost::bind( &Sender::connectToServer, this ) );
@@ -111,6 +64,20 @@ void Sender::setPaused( bool newState )
     stateChanged.notify_all();
 }
 
+void Sender::setMessageQueue( message newMsg )
+{
+    messageQueue.push_back( newMsg );
+}
+
+void *Sender::get_in_addr( struct sockaddr *sa )
+{
+    if ( sa->sa_family == AF_INET )
+    {
+        return &( ( ( struct sockaddr_in* )sa )->sin_addr );
+    }
+    return &( ( ( struct sockaddr_in6* )sa )->sin6_addr );
+}
+
 void Sender::connectToServer()
 {
     while( true )
@@ -118,6 +85,17 @@ void Sender::connectToServer()
         blockWhilePaused();
         sendTest();
     }
+}
+
+void Sender::sendTest()
+{
+    while( !messageQueue.empty() )
+    {
+        message msg = messageQueue.back();
+        send( sockfd, &msg, sizeof( message ), 0 );
+        messageQueue.pop_back();
+    }
+    pause = true;
 }
 
 void Sender::blockWhilePaused()
