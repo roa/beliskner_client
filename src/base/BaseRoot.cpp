@@ -5,7 +5,7 @@ namespace Beliskner
 
 template<> BaseRoot* Ogre::Singleton<BaseRoot>::msSingleton = 0;
 
-BaseRoot::BaseRoot()
+BaseRoot::BaseRoot( Sender* _conn ) : conn( _conn ), init( false )
 {
     logger          = NULL;
     root            = NULL;

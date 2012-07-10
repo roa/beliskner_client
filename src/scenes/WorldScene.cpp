@@ -197,6 +197,14 @@ void WorldScene::updateKeyboard()
     base->player->playerNode->translate( playerTranslate * 0.5f );
     base->player->playerNode->resetOrientation();
     base->player->playerNode->yaw( Ogre::Degree( playerRotation ) );
+
+    /*
+        TODO REMOVE
+        */
+    if( base->frameListener->keyboard->isKeyDown( OIS::KC_F ) )
+    {
+        base->conn->setPaused( false );
+    }
 }
 
 void WorldScene::updateMouse()

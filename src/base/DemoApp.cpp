@@ -7,8 +7,8 @@ DemoApp::DemoApp()
 {
     base = NULL;
     conn = NULL;
-    startNet();
     initDemoApp();
+    startNet();
 }
 
 DemoApp::~DemoApp()
@@ -18,7 +18,8 @@ DemoApp::~DemoApp()
 
 void DemoApp::initDemoApp()
 {
-    new BaseRoot();
+    conn = new Sender;
+    new BaseRoot( conn );
     base = BaseRoot::getSingletonPtr();
 }
 
@@ -31,19 +32,10 @@ void DemoApp::run()
     }
 }
 
+
 void DemoApp::startNet()
 {
-    conn = new Connection;
-    boost::thread Net(boost::bind(&DemoApp::connectTest, this));
-}
-
-void DemoApp::connectTest()
-{
-    while( true )
-    {
-        conn->sendTest();
-        sleep( 5 );
-    }
+    conn->startNet();
 }
 
 }

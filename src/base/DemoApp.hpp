@@ -5,7 +5,7 @@
 #include "OIS/OIS.h"
 
 #include "BaseRoot.hpp"
-#include "Connection.hpp"
+#include "Sender.hpp"
 
 namespace Beliskner
 {
@@ -15,12 +15,10 @@ class DemoApp
 
 private:
     BaseRoot* base;
-    Connection* conn;
+    Sender * conn;
 
     void initDemoApp();
-    void connectTest();
     void startNet();
-
 public:
     DemoApp();
     ~DemoApp();
