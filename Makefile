@@ -7,14 +7,14 @@ LD = g++
 WINDRES = windres
 
 INC = 
-CFLAGS =  -Wall `pkg-config --cflags OGRE` -fexceptions
+CFLAGS =  `pkg-config --cflags OGRE` -fexceptions
 RESINC = 
 LIBDIR =  -L/bin/Debug -L/bin/Release
 LIB =  -lGL
 LDFLAGS =  `pkg-config --libs OGRE`
 
 INC_DEBUG =  $(INC) -Isrc/base -Isrc/scenes -Isrc/net
-CFLAGS_DEBUG =  $(CFLAGS) -g
+CFLAGS_DEBUG =  $(CFLAGS) -g -Wall
 RESINC_DEBUG =  $(RESINC)
 RCFLAGS_DEBUG =  $(RCFLAGS)
 LIBDIR_DEBUG =  $(LIBDIR)
