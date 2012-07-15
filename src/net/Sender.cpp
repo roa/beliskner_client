@@ -51,7 +51,7 @@ Sender::~Sender()
 
 void Sender::startNet()
 {
-    boost::thread sender( boost::bind( &Sender::connectToServer, this ) );
+    boost::thread sender( boost::bind( &Sender::sendToServer, this ) );
     boost::thread receiver( boost::bind( &Sender::recvFromServer, this ) );
 }
 
@@ -79,12 +79,21 @@ void *Sender::get_in_addr( struct sockaddr *sa )
     return &( ( ( struct sockaddr_in6* )sa )->sin6_addr );
 }
 
-void Sender::connectToServer()
+void Sender::sendToServer()
 {
     while( true )
     {
         blockWhilePaused();
-        sendTest();
+        /*
+            TODO: check, if simple send is enough
+        */
+        while( !messageQueue.empty() )
+        {
+            message msg = messageQueue.back();
+            send( sockfd, &msg, sizeof( message ), 0 );
+            messageQueue.pop_back();
+        }
+        pause = true;
     }
 }
 
@@ -96,17 +105,6 @@ void Sender::recvFromServer()
         recv( sockfd, &msg, sizeof( message ), 0 );
         std::cout << msg.status << std::endl;
     }
-}
-
-void Sender::sendTest()
-{
-    while( !messageQueue.empty() )
-    {
-        message msg = messageQueue.back();
-        send( sockfd, &msg, sizeof( message ), 0 );
-        messageQueue.pop_back();
-    }
-    pause = true;
 }
 
 void Sender::blockWhilePaused()

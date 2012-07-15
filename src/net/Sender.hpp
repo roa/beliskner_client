@@ -46,9 +46,8 @@ private:
     std::vector<message> messageQueue;
 
     void *get_in_addr( struct sockaddr *sa );
-    void connectToServer();
+    void sendToServer();
     void recvFromServer();
-    void sendTest();
     void blockWhilePaused();
 
 };
