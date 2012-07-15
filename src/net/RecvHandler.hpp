@@ -2,6 +2,7 @@
 #define BELISKNER_RECVHANDLER_HPP
 
 #include "Message.hpp"
+#include <iostream>
 
 namespace Beliskner
 {

@@ -1,5 +1,5 @@
-#ifndef BELISKNER_CLIENT_SENDER_HPP
-#define BELISKNER_CLIENT_SENDER_HPP
+#ifndef BELISKNER_CLIENT_BASENETWORK_HPP
+#define BELISKNER_CLIENT_BASENETWORK_HPP
 
 #define PORT "9034"
 
@@ -22,12 +22,12 @@
 namespace Beliskner
 {
 
-class Sender
+class BaseNetwork
 {
 
 public:
-    Sender();
-    ~Sender();
+    BaseNetwork();
+    ~BaseNetwork();
     void startNet();
     void setPaused( bool newState );
     void setMessageQueue( message newMsg );

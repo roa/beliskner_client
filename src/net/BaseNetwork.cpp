@@ -1,9 +1,9 @@
-#include "Sender.hpp"
+#include "BaseNetwork.hpp"
 
 namespace Beliskner
 {
 
-Sender::Sender()
+BaseNetwork::BaseNetwork()
 {
     pause = false;
     base = BaseRoot::getSingletonPtr();
@@ -44,19 +44,19 @@ Sender::Sender()
 
 }
 
-Sender::~Sender()
+BaseNetwork::~BaseNetwork()
 {
 
 }
 
-void Sender::startNet()
+void BaseNetwork::startNet()
 {
-    boost::thread sender( boost::bind( &Sender::sendToServer, this ) );
-    boost::thread receiver( boost::bind( &Sender::recvFromServer, this ) );
+    boost::thread BaseNetwork( boost::bind( &BaseNetwork::sendToServer, this ) );
+    boost::thread receiver( boost::bind( &BaseNetwork::recvFromServer, this ) );
     recvHandler = new RecvHandler();
 }
 
-void Sender::setPaused( bool newState )
+void BaseNetwork::setPaused( bool newState )
 {
     {
         boost::unique_lock<boost::mutex> lock( stateMutex );
@@ -66,12 +66,12 @@ void Sender::setPaused( bool newState )
     stateChanged.notify_all();
 }
 
-void Sender::setMessageQueue( message newMsg )
+void BaseNetwork::setMessageQueue( message newMsg )
 {
     messageQueue.push_back( newMsg );
 }
 
-void *Sender::get_in_addr( struct sockaddr *sa )
+void *BaseNetwork::get_in_addr( struct sockaddr *sa )
 {
     if ( sa->sa_family == AF_INET )
     {
@@ -80,7 +80,7 @@ void *Sender::get_in_addr( struct sockaddr *sa )
     return &( ( ( struct sockaddr_in6* )sa )->sin6_addr );
 }
 
-void Sender::sendToServer()
+void BaseNetwork::sendToServer()
 {
     while( true )
     {
@@ -98,7 +98,7 @@ void Sender::sendToServer()
     }
 }
 
-void Sender::recvFromServer()
+void BaseNetwork::recvFromServer()
 {
     while( true )
     {
@@ -108,7 +108,7 @@ void Sender::recvFromServer()
     }
 }
 
-void Sender::blockWhilePaused()
+void BaseNetwork::blockWhilePaused()
 {
     boost::unique_lock<boost::mutex> lock( stateMutex );
     while( pause )
