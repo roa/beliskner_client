@@ -13,16 +13,6 @@ Receiver::~Receiver()
 
 }
 
-void Receiver::recvFromServer()
-{
-    while( true )
-    {
-        message msg;
-        recv( sockfd, &msg, sizeof( message ), 0 );
-        handleMessage( msg );
-    }
-}
-
 void Receiver::handleMessage( message msg )
 {
     switch( msg.status )
@@ -56,6 +46,16 @@ void Receiver::handleMessage( message msg )
         {
             std::cout << "something went wrong" << std::endl;
         }
+    }
+}
+
+void Receiver::recvFromServer()
+{
+    while( true )
+    {
+        message msg;
+        recv( sockfd, &msg, sizeof( message ), 0 );
+        handleMessage( msg );
     }
 }
 

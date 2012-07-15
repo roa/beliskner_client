@@ -19,6 +19,7 @@ private:
 public:
     Receiver( int _sockfd );
     ~Receiver();
+
     void recvFromServer();
 };
 

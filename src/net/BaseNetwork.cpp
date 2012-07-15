@@ -46,7 +46,10 @@ BaseNetwork::BaseNetwork()
 
 BaseNetwork::~BaseNetwork()
 {
-
+    /*
+        TODO:
+        delete sender, receiver
+    */
 }
 
 void BaseNetwork::startNet()
@@ -77,7 +80,7 @@ void BaseNetwork::initSender( int _sockfd )
 
 void BaseNetwork::initReceiver( int _sockfd )
 {
-    receiver = new Receiver( sockfd );
+    receiver = new Receiver( _sockfd );
     receiver->recvFromServer();
 }
 

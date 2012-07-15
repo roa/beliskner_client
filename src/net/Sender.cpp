@@ -13,6 +13,15 @@ Sender::~Sender()
 
 }
 
+void Sender::blockWhilePaused()
+{
+    boost::unique_lock<boost::mutex> lock( stateMutex );
+    while( pause )
+    {
+        stateChanged.wait( lock );
+    }
+}
+
 void Sender::sendToServer()
 {
     while( true )
@@ -28,15 +37,6 @@ void Sender::sendToServer()
             messageQueue.pop_back();
         }
         pause = true;
-    }
-}
-
-void Sender::blockWhilePaused()
-{
-    boost::unique_lock<boost::mutex> lock( stateMutex );
-    while( pause )
-    {
-        stateChanged.wait( lock );
     }
 }
 

@@ -15,7 +15,6 @@ class Sender
 {
 private:
     int sockfd;
-
     bool pause;
 
     boost::mutex stateMutex;
