@@ -6,7 +6,7 @@ enum statuscodes
     ID_REQUEST      = 60000,
     POSITION_UPDATE = 60001,
     ID_UPDATE       = 60002,
-    ID_ANSwER       = 60003,
+    ID_ANSWER       = 60003,
     MOVED           = 60004,
     STOPPED         = 60005
 };

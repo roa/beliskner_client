@@ -8,7 +8,7 @@
 #include "BaseScene.hpp"
 #include "NoLogger.hpp"
 #include "Player.hpp"
-#include "Sender.hpp"
+#include "BaseNetwork.hpp"
 
 #include <CEGUI/CEGUI.h>
 #include <CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h>
@@ -19,7 +19,7 @@ namespace Beliskner
 class FrameListener;
 class SceneManager;
 class Player;
-class Sender;
+class BaseNetwork;
 
 class BaseRoot : public Ogre::Singleton<BaseRoot>
 {
@@ -37,10 +37,12 @@ public:
 
     CEGUI::OgreRenderer *ceguiRenderer;
 
-    Sender* conn;
+    BaseNetwork* conn;
 
     bool keepRunning;
     bool init;
+
+    int myID;
 
     void initLogManager();
     void initOgre();
@@ -58,7 +60,7 @@ public:
     void renderOneFrame();
     bool running();
 
-    BaseRoot( Sender* _conn );
+    BaseRoot( BaseNetwork* _conn );
     ~BaseRoot();
 
 private:

@@ -18,7 +18,7 @@ DemoApp::~DemoApp()
 
 void DemoApp::initDemoApp()
 {
-    conn = new Sender;
+    conn = new BaseNetwork;
     new BaseRoot( conn );
     base = BaseRoot::getSingletonPtr();
 }
