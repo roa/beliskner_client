@@ -51,11 +51,13 @@ BaseNetwork::~BaseNetwork()
 
 void BaseNetwork::startNet()
 {
-    boost::thread BaseNetwork( boost::bind( &BaseNetwork::sendToServer, this ) );
+    //boost::thread BaseNetwork( boost::bind( &BaseNetwork::sendToServer, this ) );
+    boost::thread sender( boost::bind( &BaseNetwork::initSender, this, sockfd ) );
     boost::thread receiver( boost::bind( &BaseNetwork::recvFromServer, this ) );
     recvHandler = new RecvHandler();
 }
 
+/*
 void BaseNetwork::setPaused( bool newState )
 {
     {
@@ -65,12 +67,13 @@ void BaseNetwork::setPaused( bool newState )
 
     stateChanged.notify_all();
 }
-
+*/
+/*
 void BaseNetwork::setMessageQueue( message newMsg )
 {
     messageQueue.push_back( newMsg );
 }
-
+*/
 void *BaseNetwork::get_in_addr( struct sockaddr *sa )
 {
     if ( sa->sa_family == AF_INET )
@@ -79,15 +82,13 @@ void *BaseNetwork::get_in_addr( struct sockaddr *sa )
     }
     return &( ( ( struct sockaddr_in6* )sa )->sin6_addr );
 }
-
+/*
 void BaseNetwork::sendToServer()
 {
     while( true )
     {
         blockWhilePaused();
-        /*
-            TODO: check, if simple send is enough
-        */
+
         while( !messageQueue.empty() )
         {
             message msg = messageQueue.back();
@@ -96,6 +97,12 @@ void BaseNetwork::sendToServer()
         }
         pause = true;
     }
+}
+*/
+void BaseNetwork::initSender( int _sockfd )
+{
+    sender = new Sender( _sockfd );
+    sender->sendToServer();
 }
 
 void BaseNetwork::recvFromServer()
@@ -108,6 +115,7 @@ void BaseNetwork::recvFromServer()
     }
 }
 
+/*
 void BaseNetwork::blockWhilePaused()
 {
     boost::unique_lock<boost::mutex> lock( stateMutex );
@@ -116,5 +124,5 @@ void BaseNetwork::blockWhilePaused()
         stateChanged.wait( lock );
     }
 }
-
+*/
 }

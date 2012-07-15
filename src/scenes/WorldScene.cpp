@@ -208,39 +208,39 @@ void WorldScene::updateKeyboard()
         test->info[0] = 1;
         test->info[1] = 2;
         test->info[2] = 3;
-        base->conn->setMessageQueue( *test );
+        base->conn->sender->setMessageQueue( *test );
         //send( sockfd, ( void * ) test, sizeof( message ), 0 );
 
         test->status = POSITION_UPDATE;
         test->info[0] = 1;
         test->info[1] = 2;
         test->info[2] = 3;
-        base->conn->setMessageQueue( *test );
+        base->conn->sender->setMessageQueue( *test );
         //send( sockfd, ( void * ) test, sizeof( message ), 0 );
 
         test->status = MOVED;
         test->info[0] = 1;
         test->info[1] = 2;
         test->info[2] = 3;
-        base->conn->setMessageQueue( *test );
+        base->conn->sender->setMessageQueue( *test );
         //send( sockfd, ( void * ) test, sizeof( message ), 0 );
 
         test->status = STOPPED;
         test->info[0] = 1;
         test->info[1] = 2;
         test->info[2] = 3;
-        base->conn->setMessageQueue( *test );
+        base->conn->sender->setMessageQueue( *test );
         //send( sockfd, ( void * ) test, sizeof( message ), 0 );
 
         test->status = 1;
         test->info[0] = 1;
         test->info[1] = 2;
         test->info[2] = 3;
-        base->conn->setMessageQueue( *test );
+        base->conn->sender->setMessageQueue( *test );
         //send( sockfd, ( void * ) test, sizeof( message ), 0 );
 
         delete test;
-        base->conn->setPaused( false );
+        base->conn->sender->setPaused( false );
     }
 }
 
