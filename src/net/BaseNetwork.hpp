@@ -17,7 +17,7 @@
 
 #include "Message.hpp"
 #include "BaseRoot.hpp"
-#include "RecvHandler.hpp"
+#include "Receiver.hpp"
 #include "Sender.hpp"
 
 namespace Beliskner
@@ -30,9 +30,7 @@ public:
     BaseNetwork();
     ~BaseNetwork();
     void startNet();
-    Sender *sender;
-    //void setPaused( bool newState );
-    //void setMessageQueue( message newMsg );
+    Sender* getSender();
 
 private:
     int sockfd, numbytes;
@@ -41,22 +39,15 @@ private:
     char s[INET6_ADDRSTRLEN];
     bool pause;
 
-    //boost::mutex stateMutex;
-    //boost::condition_variable stateChanged;
-
     BaseRoot *base;
 
-    RecvHandler *recvHandler;
-
-
-    //std::vector<message> messageQueue;
+    Receiver *receiver;
+    Sender   *sender;
 
     void *get_in_addr( struct sockaddr *sa );
-    void sendToServer();
-    void recvFromServer();
-    //void blockWhilePaused();
 
     void initSender( int _sockfd );
+    void initReceiver( int _sockfd );
 };
 
 }

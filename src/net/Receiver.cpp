@@ -1,19 +1,29 @@
-#include "RecvHandler.hpp"
+#include "Receiver.hpp"
 
 namespace Beliskner
 {
 
-RecvHandler::RecvHandler()
+Receiver::Receiver( int _sockfd) : sockfd( _sockfd )
 {
 
 }
 
-RecvHandler::~RecvHandler()
+Receiver::~Receiver()
 {
 
 }
 
-void RecvHandler::handleMessage( message msg )
+void Receiver::recvFromServer()
+{
+    while( true )
+    {
+        message msg;
+        recv( sockfd, &msg, sizeof( message ), 0 );
+        handleMessage( msg );
+    }
+}
+
+void Receiver::handleMessage( message msg )
 {
     switch( msg.status )
     {
