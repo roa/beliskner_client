@@ -17,6 +17,7 @@
 
 #include "Message.hpp"
 #include "BaseRoot.hpp"
+#include "RecvHandler.hpp"
 
 namespace Beliskner
 {
@@ -42,6 +43,8 @@ private:
     boost::condition_variable stateChanged;
 
     BaseRoot *base;
+
+    RecvHandler *recvHandler;
 
     std::vector<message> messageQueue;
 

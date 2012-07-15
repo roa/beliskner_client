@@ -53,6 +53,7 @@ void Sender::startNet()
 {
     boost::thread sender( boost::bind( &Sender::sendToServer, this ) );
     boost::thread receiver( boost::bind( &Sender::recvFromServer, this ) );
+    recvHandler = new RecvHandler();
 }
 
 void Sender::setPaused( bool newState )
@@ -103,7 +104,7 @@ void Sender::recvFromServer()
     {
         message msg;
         recv( sockfd, &msg, sizeof( message ), 0 );
-        std::cout << msg.status << std::endl;
+        recvHandler->handleMessage( msg );
     }
 }
 
